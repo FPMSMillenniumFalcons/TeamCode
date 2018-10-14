@@ -31,7 +31,7 @@ public class MFAuto extends LinearOpMode {
     DcMotor rightDrive;
     DcMotor rightDriveB;
 
-    HardwarePushbot robot = new HardwarePushbot();   // Use a Pushbot's hardware
+    HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
 
     ColorSensor sensorColor1;

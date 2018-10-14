@@ -67,6 +67,7 @@ public class MFAuto extends LinearOpMode {
 
         telemetry.addData("IN: getDeviceName ", sensorColor.getDeviceName());
         telemetry.addData("IN: Hue1", hsvValues[0]);
+        telemetry.update();
 
         return hsvValues;
     }
@@ -113,6 +114,7 @@ public class MFAuto extends LinearOpMode {
             telemetry.addData("Blue2 ", sensorColor2.blue());
             telemetry.addData("getDeviceName ", sensorColor2.getDeviceName());
             telemetry.addData("Hue2", hsvValues2[0]);
+            telemetry.update();
 
 
         }

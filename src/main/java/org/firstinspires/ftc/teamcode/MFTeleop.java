@@ -63,16 +63,16 @@ import java.util.Locale;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Pushbot: Teleop Tank Test", group="Pushbot")
+@TeleOp(name="MFTeleop", group="Pushbot")
 //@Disabled
-public class PushbotTeleopTank_IterativeTest extends OpMode{
+public class MFTeleop extends OpMode{
     public DcMotor leftDrive   = null;
     public DcMotor  rightDrive  = null;
     public DcMotor leftDriveB   = null;
     public DcMotor  rightDriveB  = null;
 
     /* Declare OpMode members. */
-    HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
+    HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
                                                          // could also use HardwarePushbotMatrix class.
   //  double          clawOffset  = 0.0 ;                  // Servo mid position
   //  final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo

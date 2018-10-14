@@ -26,10 +26,10 @@ public class MFAuto extends LinearOpMode {
     Orientation angles;
     Acceleration gravity;
 
-    DcMotor leftDrive;
+    /*/DcMotor leftDrive;
     DcMotor leftDriveB;
-    DcMotor rightDrive;
-    DcMotor rightDriveB;
+    DcMotor rightDrive;fixme
+    DcMotor rightDriveB;*/
 
     HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime runtime = new ElapsedTime();
@@ -39,6 +39,38 @@ public class MFAuto extends LinearOpMode {
     DistanceSensor sensorDistance1;
     DistanceSensor sensorDistance2;
 
+
+    private float[] is_yellow(ColorSensor sensorColor) {
+        // hsvValues is an array that will hold the hue, saturation, and value information.
+        float hsvValues[] = {0F, 0F, 0F};
+
+        // values is a reference to the hsvValues array.
+        final float values[] = hsvValues;
+
+        // sometimes it helps to multiply the raw RGB values with a scale factor
+        // to amplify/attentuate the measured values.
+        final double SCALE_FACTOR = 255;
+        // convert the RGB values to HSV values.
+        // multiply by the SCALE_FACTOR.
+        // then cast it back to int (SCALE_FACTOR is a double)
+        Color.RGBToHSV((int) (sensorColor.red() * SCALE_FACTOR),
+                (int) (sensorColor.green() * SCALE_FACTOR),
+                (int) (sensorColor.blue() * SCALE_FACTOR),
+                hsvValues);
+
+        telemetry.addData("IN:Distance (cm) 1",
+                String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
+        telemetry.addData("IN: Alpha1", sensorColor.alpha());
+        telemetry.addData("IN: Red1  ", sensorColor.red());
+        telemetry.addData("IN: Green1", sensorColor.green());
+        telemetry.addData("IN: Blue1 ", sensorColor.blue());
+
+        telemetry.addData("IN: getDeviceName ", sensorColor.getDeviceName());
+        telemetry.addData("IN: Hue1", hsvValues[0]);
+
+        return hsvValues;
+    }
+
     //@Override
     public void runOpMode() throws InterruptedException {
 
@@ -47,6 +79,7 @@ public class MFAuto extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap);
+        float hsvValues1[], hsvValues2[];
 
         sensorColor1 = hardwareMap.get(ColorSensor.class, "sensor_color_distance1");
         sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_color_distance2");
@@ -56,52 +89,43 @@ public class MFAuto extends LinearOpMode {
         sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensor_color_distance2");
         // Send telemetry message to signify robot waiting;
 
-        // hsvValues is an array that will hold the hue, saturation, and value information.
-        float hsvValues1[] = {0F, 0F, 0F};
-        float hsvValues2[] = {0F, 0F, 0F};
+        while (true) {
+            // hsvValues is an array that will hold the hue, saturation, and value information.
+            hsvValues1 = is_yellow(sensorColor1);
+            hsvValues2 = is_yellow(sensorColor2);
 
-        // values is a reference to the hsvValues array.
-        final float values1[] = hsvValues1;
-        final float values2[] = hsvValues2;
+            // send the info back to driver station using telemetry function.
+            telemetry.addData("Distance (cm) 1",
+                    String.format(Locale.US, "%.02f", sensorDistance1.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Alpha1", sensorColor1.alpha());
+            telemetry.addData("Red1  ", sensorColor1.red());
+            telemetry.addData("Green1", sensorColor1.green());
+            telemetry.addData("Blue1 ", sensorColor1.blue());
 
-        // sometimes it helps to multiply the raw RGB values with a scale factor
-        // to amplify/attentuate the measured values.
-        final double SCALE_FACTOR = 255;
-        // convert the RGB values to HSV values.
-        // multiply by the SCALE_FACTOR.
-        // then cast it back to int (SCALE_FACTOR is a double)
-        Color.RGBToHSV((int) (sensorColor1.red() * SCALE_FACTOR),
-                (int) (sensorColor1.green() * SCALE_FACTOR),
-                (int) (sensorColor1.blue() * SCALE_FACTOR),
-                hsvValues1);
-        Color.RGBToHSV((int) (sensorColor2.red() * SCALE_FACTOR),
-                (int) (sensorColor2.green() * SCALE_FACTOR),
-                (int) (sensorColor2.blue() * SCALE_FACTOR),
-                hsvValues2);
+            telemetry.addData("getDeviceName ", sensorColor1.getDeviceName());
+            telemetry.addData("Hue1", hsvValues1[0]);
+
+            telemetry.addData("Distance (cm)2",
+                    String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
+            telemetry.addData("Alpha2", sensorColor2.alpha());
+            telemetry.addData("Red2  ", sensorColor2.red());
+            telemetry.addData("Green2", sensorColor2.green());
+            telemetry.addData("Blue2 ", sensorColor2.blue());
+            telemetry.addData("getDeviceName ", sensorColor2.getDeviceName());
+            telemetry.addData("Hue2", hsvValues2[0]);
 
 
-        // send the info back to driver station using telemetry function.
-        telemetry.addData("Distance (cm) 1",
-                String.format(Locale.US, "%.02f", sensorDistance1.getDistance(DistanceUnit.CM)));
-        telemetry.addData("Alpha1", sensorColor1.alpha());
-        telemetry.addData("Red1  ", sensorColor1.red());
-        telemetry.addData("Green1", sensorColor1.green());
-        telemetry.addData("Blue1 ", sensorColor1.blue());
-        telemetry.addData("Hue1", hsvValues1[0]);
+        }
 
-        telemetry.addData("Distance (cm)2",
-                String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
-        telemetry.addData("Alpha2", sensorColor2.alpha());
-        telemetry.addData("Red2  ", sensorColor2.red());
-        telemetry.addData("Green2", sensorColor2.green());
-        telemetry.addData("Blue2 ", sensorColor2.blue());
-        telemetry.addData("Hue2", hsvValues2[0]);
-
-        waitForStart();
         //new comments here
         //testing
 
+
+
     }
+
+
+
 
 }
 

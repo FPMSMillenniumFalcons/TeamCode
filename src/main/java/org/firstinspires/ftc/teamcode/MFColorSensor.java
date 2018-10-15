@@ -31,7 +31,8 @@ public class MFColorSensor extends LinearOpMode {
     DistanceSensor sensorDistance1;
     DistanceSensor sensorDistance2;
 
-    private float[] is_color_yellow(ColorSensor sensorColor) {
+    private int is_color_yellow(ColorSensor sensorColor) {
+        int isyellow = 0;
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F, 0F, 0F};
 
@@ -49,6 +50,8 @@ public class MFColorSensor extends LinearOpMode {
                 (int) (sensorColor.blue() * SCALE_FACTOR),
                 hsvValues);
 
+        //FIXME base on hsvValues determine if it's yellow color
+
         //telemetry.addData("IN:Distance (cm) 1",
         //    String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
         telemetry.addData("IN: Alpha1", sensorColor.alpha());
@@ -60,7 +63,7 @@ public class MFColorSensor extends LinearOpMode {
         telemetry.addData("IN: Hue1", hsvValues[0]);
         telemetry.update();
 
-        return hsvValues;
+        return isyellow; //hsvValues;
     }
 
     //@Override
@@ -113,5 +116,12 @@ public class MFColorSensor extends LinearOpMode {
 
         }
     }
+
+    /* FIXME: add code here
+    public double query_distant()
+    {
+
+    }
+    */
 }
 

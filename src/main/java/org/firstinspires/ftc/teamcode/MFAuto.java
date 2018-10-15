@@ -22,6 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class MFAuto extends LinearOpMode {
     /*
      * instantiate chassis object. chassis object should contains all driver capability.
+     * Gyro sensor should be part of chassis
      * should have following methods:
      *    chassis.shift_left(double distance or double time);
      *    chassis.shift_right(double distance or double time);

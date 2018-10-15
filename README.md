@@ -1,5 +1,5 @@
 # TeamCode
-This project contains TeamCode for FPMSMillenniumFalcons robotic project.
+This project contains TeamCode for FPMSMillenniumFalcons robotic source code.
 
 Prerequisite:
 1. download Andriod SDK https://developer.android.com/studio/

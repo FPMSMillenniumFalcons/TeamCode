@@ -116,22 +116,6 @@ public class HardwarePushbot2
   //      rightClaw.setPosition(MID_SERVO);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
  }
 

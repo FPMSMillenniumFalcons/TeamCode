@@ -26,9 +26,9 @@ public class MFAuto extends LinearOpMode {
     Orientation angles;
     Acceleration gravity;
 
-    /*/DcMotor leftDrive;
+    /*DcMotor leftDrive;
     DcMotor leftDriveB;
-    DcMotor rightDrive;fixme
+    DcMotor rightDrive;
     DcMotor rightDriveB;*/
 
     HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
@@ -40,7 +40,7 @@ public class MFAuto extends LinearOpMode {
     DistanceSensor sensorDistance2;
 
 
-    private float[] is_yellow(ColorSensor sensorColor) {
+    private float[] is_color_yellow(ColorSensor sensorColor) {
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F, 0F, 0F};
 
@@ -90,12 +90,15 @@ public class MFAuto extends LinearOpMode {
         sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensor_color_distance2");
         // Send telemetry message to signify robot waiting;
 
-        while (true) {
+        /*
+         * main loop of autonomous
+         */
+        while (opModeIsActive()) {
             // hsvValues is an array that will hold the hue, saturation, and value information.
-            hsvValues1 = is_yellow(sensorColor1);
-            hsvValues2 = is_yellow(sensorColor2);
+            hsvValues1 = is_color_yellow(sensorColor1);
+            hsvValues2 = is_color_yellow(sensorColor2);
 
-            // send the info back to driver station using telemetry function.
+            /* send the info back to driver station using telemetry function.
             telemetry.addData("Distance (cm) 1",
                     String.format(Locale.US, "%.02f", sensorDistance1.getDistance(DistanceUnit.CM)));
             telemetry.addData("Alpha1", sensorColor1.alpha());
@@ -114,19 +117,12 @@ public class MFAuto extends LinearOpMode {
             telemetry.addData("Blue2 ", sensorColor2.blue());
             telemetry.addData("getDeviceName ", sensorColor2.getDeviceName());
             telemetry.addData("Hue2", hsvValues2[0]);
+            */
             telemetry.update();
-
 
         }
 
-        //new comments here
-        //testing
-
-
-
     }
-
-
 
 
 }

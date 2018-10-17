@@ -78,6 +78,7 @@ public class MFAuto extends LinearOpMode {
             //FIXME:
             // chassis drive to next station
             // etc the whole game should be here.
+            //hi this is anamika
         }
 
     }

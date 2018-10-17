@@ -29,11 +29,14 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.hardware.ColorSensor;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 /**
  * This is NOT an opmode.
  *
@@ -50,7 +53,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class HardwarePushbot2
+public class MFChassis
 {
     /* Public OpMode members. */
     public DcMotor  leftDrive   = null;
@@ -59,8 +62,11 @@ public class HardwarePushbot2
     public DcMotor  rightDriveB  = null;
     public DcMotor  liftDrive = null;
 
+    // The IMU sensor object
+    Gyro_Test gyro = new Gyro_Test();
 
- //   public DcMotor  leftArm     = null;
+
+    //   public DcMotor  leftArm     = null;
  //   public Servo    leftClaw    = null;
  //   public Servo    rightClaw   = null;
 
@@ -73,7 +79,7 @@ public class HardwarePushbot2
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
-    public HardwarePushbot2(){
+    public MFChassis(){
 
     }
 
@@ -115,7 +121,39 @@ public class HardwarePushbot2
  //       leftClaw.setPosition(MID_SERVO);
   //      rightClaw.setPosition(MID_SERVO);
 
+        //FIXME: Add Gyro code here
 
     }
- }
+
+    /* FIXME: add code here
+    public int shift_left(double distance or double time)
+    {
+    }
+     */
+
+    /* FIXME: add code here
+    public int shift_right(double distance or double time)
+    {
+    }
+     */
+
+    /* FIXME: add code here
+    public int turn_left(double distance or double time)
+    {
+    }
+     */
+
+    /* FIXME: add code here
+    public int turn_right(double distance or double time)
+    {
+    }
+     */
+
+    /* FIXME: add code here
+    public int go_straight(double distance or double time)
+    {
+    }
+     */
+
+}
 

@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode;
 
 
-
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -51,32 +50,34 @@ import java.util.Locale;
 /**
  * This file provides basic Telop driving for a Pushbot robot.
  * The code is structured as an Iterative OpMode
- *
+ * <p>
  * This OpMode uses the common Pushbot hardware class to define the devices on the robot.
  * All device access is managed through the HardwarePushbot class.
- *
+ * <p>
  * This particular OpMode executes a basic Tank Drive Teleop for a PushBot
  * It raises and lowers the claw using the Gampad Y and A buttons respectively.
  * It also opens and closes the claws slowly using the left and right Bumper buttons.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="MFTeleop", group="Pushbot")
+@TeleOp(name = "MFTeleop", group = "Pushbot")
 //@Disabled
-public class MFTeleop extends OpMode{
-    public DcMotor leftDrive   = null;
-    public DcMotor  rightDrive  = null;
-    public DcMotor leftDriveB   = null;
-    public DcMotor  rightDriveB  = null;
+public class MFTeleop extends OpMode {
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    public DcMotor leftDriveB = null;
+    public DcMotor rightDriveB = null;
+    public DcMotor liftDrive = null; //neverrest 60 - 1
 
     /* Declare OpMode members. */
-    HardwarePushbot2 robot       = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
-                                                         // could also use HardwarePushbotMatrix class.
-  //  double          clawOffset  = 0.0 ;                  // Servo mid position
-  //  final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
-     //ColorSensor sensorColor1;
+    HardwarePushbot2 robot = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
+
+    // could also use HardwarePushbotMatrix class.
+    //  double          clawOffset  = 0.0 ;                  // Servo mid position
+    //  final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
+    //ColorSensor sensorColor1;
     //ColorSensor sensorColor2; fixme
     //DistanceSensor sensorDistance1;
     //DistanceSensor sensorDistance2;
@@ -94,10 +95,12 @@ public class MFTeleop extends OpMode{
 
         telemetry.addData("Say", "Hello Driver");    //
         //reference to motors
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
+        leftDrive = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-        leftDriveB  = hardwareMap.get(DcMotor.class, "left_driveB");
+        leftDriveB = hardwareMap.get(DcMotor.class, "left_driveB");
         rightDriveB = hardwareMap.get(DcMotor.class, "right_driveB");
+        liftDrive = hardwareMap.get(DcMotor.class, "lift_drive");
+
 
     }
 
@@ -126,7 +129,6 @@ public class MFTeleop extends OpMode{
         double sideleftneg;
         double sideright;
         double siderightneg;
-
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -164,39 +166,40 @@ public class MFTeleop extends OpMode{
         robot.rightDrive.setPower(siderightneg);
         robot.rightDriveB.setPower(sideright);
 
+        int raiseValue = robot.liftDrive.getCurrentPosition();
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 50 && gamepad1.dpad_up == true) {
 
+            robot.liftDrive.setPower(.2);
+        }// Raise the Lift
 
-
+        robot.liftDrive.setPower(0);
 
 
         // Use gamepad left & right Bumpers to open and close the claw
-      //  if (gamepad1.right_bumper)
-      //      clawOffset += CLAW_SPEED;
-      //  else if (gamepad1.left_bumper)
-       //     clawOffset -= CLAW_SPEED;
+        //  if (gamepad1.right_bumper)
+        //      clawOffset += CLAW_SPEED;
+        //  else if (gamepad1.left_bumper)
+        //     clawOffset -= CLAW_SPEED;
 
         // Move both servos to new position.  Assume servos are mirror image of each other.
-      //  clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-      //  robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-     //   robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+        //  clawOffset = Range.clip(clawOffset, -0.5, 0.5);
+        //  robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
+        //   robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
 
         // Use gamepad buttons to move the arm up (Y) and down (A)
-       // if (gamepad1.y)
-       //     robot.leftArm.setPower(robot.ARM_UP_POWER);
-      //  else if (gamepad1.a)
-       //     robot.leftArm.setPower(robot.ARM_DOWN_POWER);
-      //  else
-       //     robot.leftArm.setPower(0.0);
+        // if (gamepad1.y)
+        //     robot.leftArm.setPower(robot.ARM_UP_POWER);
+        //  else if (gamepad1.a)
+        //     robot.leftArm.setPower(robot.ARM_DOWN_POWER);
+        //  else
+        //     robot.leftArm.setPower(0.0);
 
         // Send telemetry message to signify robot running;
-      //  telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-        telemetry.addData("left",  "%.2f", left);
+        //  telemetry.addData("claw",  "Offset = %.2f", clawOffset);
+        telemetry.addData("left", "%.2f", left);
 
 
-
-
-
-      //  telemetry.addData("right", "%.2f", right);
+        //  telemetry.addData("right", "%.2f", right);
     }
 
     /*

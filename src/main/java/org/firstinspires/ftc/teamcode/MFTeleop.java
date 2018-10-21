@@ -125,8 +125,8 @@ public class MFTeleop extends OpMode {
     public void loop() {
         double left;
         double right;
-       // double sideleft;
-       // double sideleftneg;
+        // double sideleft;
+        // double sideleftneg;
         double sideright;
         double siderightneg;
 
@@ -169,7 +169,7 @@ public class MFTeleop extends OpMode {
         int raiseValue = robot.liftDrive.getCurrentPosition();
         while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad1.dpad_up) {
             telemetry.addData("LiftMotor ", "ON");
-            robot.liftDrive.setPower(.2);
+            robot.liftDrive.setPower(-.50);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
             telemetry.addData("raiseValue", raiseValue);
             telemetry.update();
@@ -177,8 +177,19 @@ public class MFTeleop extends OpMode {
         telemetry.addData("done", "liftOver");
         robot.liftDrive.setPower(0);
         telemetry.update();
+        int lowerValue = robot.liftDrive.getCurrentPosition();
 
+        while (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 && gamepad1.dpad_down) {
+            telemetry.addData("LiftMotor2 ", "ON");
+            robot.liftDrive.setPower(.50);
+            telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("lowerValue", lowerValue);
+            telemetry.update();
 
+        }
+        telemetry.addData("done", "liftOver2");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
 
         // Use gamepad left & right Bumpers to open and close the claw
         //  if (gamepad1.right_bumper)

@@ -167,7 +167,7 @@ public class MFTeleop extends OpMode {
         robot.rightDriveB.setPower(sideright);
 
         int raiseValue = robot.liftDrive.getCurrentPosition();
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 50 && gamepad1.dpad_up == true) {
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad1.dpad_up == true) {
             telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(.2);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());

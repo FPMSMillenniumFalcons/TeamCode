@@ -29,6 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -38,36 +41,27 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-/**
- * This is NOT an opmode.
- *
- * This class can be used to define all the specific hardware for a single robot.
- * In this case that robot is a Pushbot.
- * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
- * This hardware class assumes the following device names have been configured on the robot:
- * Note:  All names are lower case and some have single spaces between words.
- *
- * Motor channel:  Left  drive motor:        "left_drive"
- * Motor channel:  Right drive motor:        "right_drive"
- * Motor channel:  Manipulator drive motor:  "left_arm"
- * Servo channel:  Servo to open left claw:  "left_hand"
- * Servo channel:  Servo to open right claw: "right_hand"
- */
-public class MFChassis
-{
+@Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
+//@Disabled
+public class MFLiftClaw extends LinearOpMode{
     /* Declare OpMode members. */
-    HardwarePushbot robot = new HardwarePushbot2();   // Use a Pushbot's hardware
+    HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime period  = new ElapsedTime();
 
+    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
+    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
+    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
+    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double     DRIVE_SPEED             = 0.6;
 
     /* Constructor */
-    public MFChassis(){
+    public MFLiftClaw(){
     }
 
     @Override
     public void runOpMode() {
+        double lift_distance;
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -91,49 +85,73 @@ public class MFChassis
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  5,  5, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        lift_distance = 5.0;
+        encoderDrive(DRIVE_SPEED,  lift_distance,  5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         telemetry.addData("Lift self to top ", "Complete. Sleep 10");
         telemetry.update();
 
         sleep(10);     // pause for servos to move
  
 	// now lower robot
-        encoderDrive(DRIVE_SPEED,  -5,  -5, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+        lift_distance = -5.0; // for teleop   = gamepad
+        encoderDrive(DRIVE_SPEED,  lift_distance,  5.0);  // S1: Forward 47 Inches with 5 Sec timeout
  
         telemetry.addData("Lift", "Complete");
         telemetry.update();
 	
     }
 
-    /* FIXME: add code here
-    public int shift_left(double distance or double time)
-    {
-    }
+    /*
+     *  Method to perfmorm a relative move, based on encoder counts.
+     *  Encoders are not reset as the move is based on the current position.
+     *  Move will stop if any of three conditions occur:
+     *  1) Move gets to the desired position
+     *  2) Move runs out of time
+     *  3) Driver stops the opmode running.
      */
+    public void encoderDrive(double speed,
+                             double liftInches,
+                             double timeoutS) {
+        int newLiftTarget;
 
-    /* FIXME: add code here
-    public int shift_right(double distance or double time)
-    {
-    }
-     */
+        // Ensure that the opmode is still active
+        if (opModeIsActive()) {
 
-    /* FIXME: add code here
-    public int turn_left(double distance or double time)
-    {
-    }
-     */
+            // Determine new target position, and pass to motor controller
+            newLiftTarget = robot.liftDrive.getCurrentPosition() + (int)(liftInches * COUNTS_PER_INCH);
+            robot.liftDrive.setTargetPosition(newLiftTarget);
 
-    /* FIXME: add code here
-    public int turn_right(double distance or double time)
-    {
-    }
-     */
+            // Turn On RUN_TO_POSITION
+            robot.liftDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-    /* FIXME: add code here
-    public int go_straight(double distance or double time)
-    {
+            // reset the timeout time and start motion.
+            runtime.reset();
+            robot.liftDrive.setPower(Math.abs(speed));
+
+            // keep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // its target position, the motion will stop.  This is "safer" in the event that the robot will
+            // always end the motion as soon as possible.
+            // However, if you require that BOTH motors have finished their moves before the robot continues
+            // onto the next step, use (isBusy() || isBusy()) in the loop test.
+            while (opModeIsActive() &&
+                   (runtime.seconds() < timeoutS) &&
+                   (robot.liftDrive.isBusy())) {
+
+                // Display it for the driver.
+                telemetry.addData("Path1",  "Running to %7d", newLiftTarget);
+                telemetry.addData("Path2",  "Running at %7d", robot.liftDrive.getCurrentPosition());
+                telemetry.update();
+            }
+
+            // Stop all motion;
+            robot.liftDrive.setPower(0);
+
+            // Turn off RUN_TO_POSITION
+            robot.liftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            //  sleep(250);   // optional pause after each move
+        }
     }
-     */
 
 }
-

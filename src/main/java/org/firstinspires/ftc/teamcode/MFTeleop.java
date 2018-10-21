@@ -168,12 +168,15 @@ public class MFTeleop extends OpMode {
 
         int raiseValue = robot.liftDrive.getCurrentPosition();
         while (robot.liftDrive.getCurrentPosition() - raiseValue < 50 && gamepad1.dpad_up == true) {
-
+            telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(.2);
+            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("raiseValue", raiseValue);
+            telemetry.update();
         }// Raise the Lift
-
+telemetry.addData("done", "liftOver");
         robot.liftDrive.setPower(0);
-
+telemetry.update();
 
         // Use gamepad left & right Bumpers to open and close the claw
         //  if (gamepad1.right_bumper)

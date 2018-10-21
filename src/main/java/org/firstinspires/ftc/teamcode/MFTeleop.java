@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-
 import android.graphics.Color;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
@@ -64,6 +63,7 @@ import java.util.Locale;
 
 @TeleOp(name = "MFTeleop", group = "Pushbot")
 //@Disabled
+
 public class MFTeleop extends OpMode {
     public DcMotor leftDrive = null;
     public DcMotor rightDrive = null;
@@ -125,8 +125,8 @@ public class MFTeleop extends OpMode {
     public void loop() {
         double left;
         double right;
-        double sideleft;
-        double sideleftneg;
+       // double sideleft;
+       // double sideleftneg;
         double sideright;
         double siderightneg;
 
@@ -167,16 +167,18 @@ public class MFTeleop extends OpMode {
         robot.rightDriveB.setPower(sideright);
 
         int raiseValue = robot.liftDrive.getCurrentPosition();
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad1.dpad_up == true) {
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad1.dpad_up) {
             telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(.2);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
             telemetry.addData("raiseValue", raiseValue);
             telemetry.update();
         }// Raise the Lift
-telemetry.addData("done", "liftOver");
+        telemetry.addData("done", "liftOver");
         robot.liftDrive.setPower(0);
-telemetry.update();
+        telemetry.update();
+
+
 
         // Use gamepad left & right Bumpers to open and close the claw
         //  if (gamepad1.right_bumper)

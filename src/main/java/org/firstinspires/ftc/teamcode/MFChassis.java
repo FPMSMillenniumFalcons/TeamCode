@@ -30,13 +30,15 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import android.graphics.Color;
 
-import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
+
 
 /**
  * This is NOT an opmode.
@@ -54,10 +56,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class MFChassis
-{
+public class MFChassis extends LinearOpMode{
+
     /* Declare OpMode members. */
-    HardwarePushbot robot = new HardwarePushbot2();   // Use a Pushbot's hardware
+    HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime period  = new ElapsedTime();
 
     static final double     DRIVE_SPEED             = 0.6;
@@ -66,7 +68,7 @@ public class MFChassis
     public MFChassis(){
     }
 
-    @Override
+
     public void runOpMode() {
         /*
          * Initialize the drive system variables.
@@ -91,7 +93,7 @@ public class MFChassis
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_SPEED,  5,  5, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
+       /* encoderDrive(DRIVE_SPEED,  5,  5, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
         telemetry.addData("Lift self to top ", "Complete. Sleep 10");
         telemetry.update();
 
@@ -101,7 +103,7 @@ public class MFChassis
         encoderDrive(DRIVE_SPEED,  -5,  -5, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout
  
         telemetry.addData("Lift", "Complete");
-        telemetry.update();
+        telemetry.update();*/
 	
     }
 

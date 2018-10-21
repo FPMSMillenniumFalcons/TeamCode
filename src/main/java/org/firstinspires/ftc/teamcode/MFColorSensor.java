@@ -89,8 +89,8 @@ public class MFColorSensor extends LinearOpMode {
          */
         while (opModeIsActive()) {
             // hsvValues is an array that will hold the hue, saturation, and value information.
-            hsvValues1 = is_color_yellow(sensorColor1);
-            hsvValues2 = is_color_yellow(sensorColor2);
+            //hsvValues1 = is_color_yellow(sensorColor1);
+            //hsvValues2 = is_color_yellow(sensorColor2);
 
             /* send the info back to driver station using telemetry function.
             telemetry.addData("Distance (cm) 1",

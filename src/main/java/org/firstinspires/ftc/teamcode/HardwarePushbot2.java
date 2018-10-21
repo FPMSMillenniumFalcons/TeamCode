@@ -104,7 +104,7 @@ public class HardwarePushbot2
         leftDrive.setPower(0);
         rightDrive.setPower(0);
         leftDriveB.setPower(0);
-        rightDriveB.setPower(0);fixme
+        rightDriveB.setPower(0);//fixme
         liftDrive.setPower(0);
         armDrive.setPower(0);
         armTiltDrive.setPower(0);

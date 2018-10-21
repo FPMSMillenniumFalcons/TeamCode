@@ -58,13 +58,14 @@ public class HardwarePushbot2
     public DcMotor  leftDriveB   = null;
     public DcMotor  rightDriveB  = null;
     public DcMotor  liftDrive = null;
+    public DcMotor  armDrive = null;
+    public DcMotor  armTiltDrive = null;
+    public Servo    claw = null;
 
+    // The IMU sensor object
+    Gyro_Test gyro = new Gyro_Test();
 
- //   public DcMotor  leftArm     = null;
- //   public Servo    leftClaw    = null;
- //   public Servo    rightClaw   = null;
-
-    //public static final double MID_SERVO       =  0.5 ;
+    public static final double MID_SERVO       =  0.5 ;
     //public static final double ARM_UP_POWER    =  0.45 ;
     //public static final double ARM_DOWN_POWER  = -0.45 ;
 
@@ -87,19 +88,26 @@ public class HardwarePushbot2
         rightDrive = hwMap.get(DcMotor.class, "right_drive");
         leftDriveB  = hwMap.get(DcMotor.class, "left_driveB");
         rightDriveB = hwMap.get(DcMotor.class, "right_driveB");
- //       leftArm    = hwMap.get(DcMotor.class, "left_arm");
+        liftDrive = hwMap.get(DcMotor.class, "lift_drive");
+        armDrive = hwMap.get(DcMotor.class, "arm_lift_drive");
+        armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
+
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
         leftDriveB.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDriveB.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
+        liftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        armDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        armTiltDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
 
         // Set all motors to zero power
-       /* leftDrive.setPower(0);
+        leftDrive.setPower(0);
         rightDrive.setPower(0);
         leftDriveB.setPower(0);
         rightDriveB.setPower(0);fixme
         liftDrive.setPower(0);
- //       leftArm.setPower(0);*/
+        armDrive.setPower(0);
+        armTiltDrive.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -107,14 +115,15 @@ public class HardwarePushbot2
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftDriveB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDriveB.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-  //      leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        armTiltDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-  //      leftClaw  = hwMap.get(Servo.class, "left_hand");
- //       rightClaw = hwMap.get(Servo.class, "right_hand");
- //       leftClaw.setPosition(MID_SERVO);
-  //      rightClaw.setPosition(MID_SERVO);
+        claw = hwMap.get(Servo.class, "claw");
+        claw.setPosition(MID_SERVO);
 
+        //FIXME: Add Gyro code here
 
     }
  }

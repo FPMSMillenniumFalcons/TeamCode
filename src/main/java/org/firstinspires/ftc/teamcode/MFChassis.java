@@ -91,6 +91,50 @@ public class MFChassis extends LinearOpMode{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        int startVal = robot.leftDrive.getCurrentPosition();
+
+        while (robot.leftDrive.getCurrentPosition() - startVal < 2000){
+            telemetry.addData("MOTORS ", "ON");
+        robot.leftDrive.setPower(0.5);
+        robot.rightDrive.setPower(0.5);
+        robot.leftDriveB.setPower(0.5);
+        robot.rightDriveB.setPower(0.5);
+        telemetry.addData("left", robot.leftDrive.getCurrentPosition());
+        telemetry.addData("startValue", startVal);
+        telemetry.update();}
+
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDriveB.setPower(0);
+
+        int startValR = robot.rightDrive.getCurrentPosition();
+
+        while (robot.rightDrive.getCurrentPosition() - startValR <  1000 ){
+        robot.leftDrive.setPower(-0.5);
+        robot.rightDrive.setPower(0.5);
+        robot.leftDriveB.setPower(0.5);
+        robot.rightDriveB.setPower(-0.5);
+        telemetry.addData("right", robot.rightDrive.getCurrentPosition());
+        telemetry.addData("startValue", startValR);
+        telemetry.update();}
+
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDriveB.setPower(0);
+
+        while(robot.leftDrive.getCurrentPosition() - startVal < 1000){
+        robot.leftDrive.setPower(0.5);
+        robot.rightDrive.setPower(-0.5);
+        robot.leftDriveB.setPower(-0.5);
+        robot.rightDriveB.setPower(0.5);}
+
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDriveB.setPower(0);
+
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
        /* encoderDrive(DRIVE_SPEED,  5,  5, 5.0);  // S1: Forward 47 Inches with 5 Sec timeout

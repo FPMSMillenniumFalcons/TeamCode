@@ -90,50 +90,88 @@ public class MFChassis extends LinearOpMode{
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+        int lowerValue = robot.liftDrive.getCurrentPosition();
+        while (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 ) {
+            telemetry.addData("LiftMotor2 ", "ON");
+            robot.liftDrive.setPower(.50);
+            telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("lowerValue", lowerValue);
+            telemetry.update();
 
-        int startVal = robot.leftDrive.getCurrentPosition();
+        }
+        telemetry.addData("done", "liftOver2");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
 
-        while (robot.leftDrive.getCurrentPosition() - startVal < 2000){
+        int forwardVal = robot.leftDrive.getCurrentPosition();
+
+
+        while (robot.leftDrive.getCurrentPosition() - forwardVal < 1000){
             telemetry.addData("MOTORS ", "ON");
         robot.leftDrive.setPower(0.5);
         robot.rightDrive.setPower(0.5);
         robot.leftDriveB.setPower(0.5);
         robot.rightDriveB.setPower(0.5);
         telemetry.addData("left", robot.leftDrive.getCurrentPosition());
-        telemetry.addData("startValue", startVal);
-        telemetry.update();}
+        telemetry.addData("forwardValue", forwardVal);
+        telemetry.update();
+        }
 
         robot.leftDrive.setPower(0);
         robot.rightDrive.setPower(0);
         robot.leftDriveB.setPower(0);
         robot.rightDriveB.setPower(0);
 
-        int startValR = robot.rightDrive.getCurrentPosition();
+        int rightVal = robot.rightDrive.getCurrentPosition();
+        int right2Val = robot.leftDriveB.getCurrentPosition();
 
-        while (robot.rightDrive.getCurrentPosition() - startValR <  1000 ){
+        //GO RIGHT
+        while (robot.rightDrive.getCurrentPosition() - (rightVal + right2Val)/2 <  1000 ){
         robot.leftDrive.setPower(-0.5);
         robot.rightDrive.setPower(0.5);
         robot.leftDriveB.setPower(0.5);
         robot.rightDriveB.setPower(-0.5);
         telemetry.addData("right", robot.rightDrive.getCurrentPosition());
-        telemetry.addData("startValue", startValR);
+        telemetry.addData("rightValue", rightVal);
         telemetry.update();}
 
         robot.leftDrive.setPower(0);
         robot.rightDrive.setPower(0);
         robot.leftDriveB.setPower(0);
         robot.rightDriveB.setPower(0);
-
-        while(robot.leftDrive.getCurrentPosition() - startVal < 1000){
+         
+        int leftVal = robot.leftDrive.getCurrentPosition();
+        int left2Val= robot.rightDriveB.getCurrentPosition();
+        //go left
+        while(robot.leftDrive.getCurrentPosition() - (leftVal + left2Val)/2 < 1000){
         robot.leftDrive.setPower(0.5);
         robot.rightDrive.setPower(-0.5);
         robot.leftDriveB.setPower(-0.5);
         robot.rightDriveB.setPower(0.5);}
 
+
         robot.leftDrive.setPower(0);
         robot.rightDrive.setPower(0);
         robot.leftDriveB.setPower(0);
         robot.rightDriveB.setPower(0);
+
+        int backVal = robot.rightDrive.getCurrentPosition();
+
+        //go backwards
+        while(robot.rightDrive.getCurrentPosition() - backVal < 1000){
+            robot.leftDrive.setPower(-0.5);
+            robot.rightDrive.setPower(-0.5);
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(-0.5);
+        }
+
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDriveB.setPower(0);
+
+
+
 
         // Step through each leg of the path,
         // Note: Reverse movement is obtained by setting a negative distance (not speed)

@@ -129,6 +129,9 @@ public class MFTeleop extends OpMode {
         // double sideleftneg;
         double sideright;
         double siderightneg;
+        double boom;
+        double tilt;
+        double close;
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -146,6 +149,12 @@ public class MFTeleop extends OpMode {
             left = 0;
             right = 0;
         }
+        boom = gamepad2.right_stick_y;
+        tilt = gamepad2.left_stick_y;
+        close = gamepad2.right_trigger;
+        robot.armDrive.setPower(boom);
+        robot.armTiltDrive.setPower(tilt);
+        robot.claw.setPosition(close);
 
         // get a reference to the color sensor.
         //go forward & backwards
@@ -167,7 +176,7 @@ public class MFTeleop extends OpMode {
         robot.rightDriveB.setPower(sideright);
 
         int raiseValue = robot.liftDrive.getCurrentPosition();
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad1.dpad_up) {
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad2.dpad_up) {
             telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(-.50);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
@@ -179,7 +188,7 @@ public class MFTeleop extends OpMode {
         telemetry.update();
         int lowerValue = robot.liftDrive.getCurrentPosition();
 
-        while (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 && gamepad1.dpad_down) {
+        while (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 && gamepad2.dpad_down) {
             telemetry.addData("LiftMotor2 ", "ON");
             robot.liftDrive.setPower(.50);
             telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
@@ -190,6 +199,7 @@ public class MFTeleop extends OpMode {
         telemetry.addData("done", "liftOver2");
         robot.liftDrive.setPower(0);
         telemetry.update();
+
 
         // Use gamepad left & right Bumpers to open and close the claw
         //  if (gamepad1.right_bumper)

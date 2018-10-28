@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -56,6 +57,7 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
+@Autonomous (name = "MFChassis", group = "14404")
 public class MFChassis extends LinearOpMode{
 
     /* Declare OpMode members. */
@@ -80,7 +82,7 @@ public class MFChassis extends LinearOpMode{
         telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
 
-        robot.liftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*robot.liftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.liftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
@@ -101,74 +103,22 @@ public class MFChassis extends LinearOpMode{
         }
         telemetry.addData("done", "liftOver2");
         robot.liftDrive.setPower(0);
-        telemetry.update();
+        telemetry.update();*/
 
-        int forwardVal = robot.leftDrive.getCurrentPosition();
-
-
-        while (robot.leftDrive.getCurrentPosition() - forwardVal < 1000){
-            telemetry.addData("MOTORS ", "ON");
-        robot.leftDrive.setPower(0.5);
-        robot.rightDrive.setPower(0.5);
-        robot.leftDriveB.setPower(0.5);
-        robot.rightDriveB.setPower(0.5);
-        telemetry.addData("left", robot.leftDrive.getCurrentPosition());
-        telemetry.addData("forwardValue", forwardVal);
-        telemetry.update();
-        }
-
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
-        robot.leftDriveB.setPower(0);
-        robot.rightDriveB.setPower(0);
-
-        int rightVal = robot.rightDrive.getCurrentPosition();
-        int right2Val = robot.leftDriveB.getCurrentPosition();
+        go_straight(1000, 0.5);
+        stop_drive(0);
 
         //GO RIGHT
-        while (robot.rightDrive.getCurrentPosition() - (rightVal + right2Val)/2 <  1000 ){
-        robot.leftDrive.setPower(-0.5);
-        robot.rightDrive.setPower(0.5);
-        robot.leftDriveB.setPower(0.5);
-        robot.rightDriveB.setPower(-0.5);
-        telemetry.addData("right", robot.rightDrive.getCurrentPosition());
-        telemetry.addData("rightValue", rightVal);
-        telemetry.update();}
-
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
-        robot.leftDriveB.setPower(0);
-        robot.rightDriveB.setPower(0);
+        shift_right(1000 /*angle*/, 0.5);
+        stop_drive(0);
          
-        int leftVal = robot.leftDrive.getCurrentPosition();
-        int left2Val= robot.rightDriveB.getCurrentPosition();
         //go left
-        while(robot.leftDrive.getCurrentPosition() - (leftVal + left2Val)/2 < 1000){
-        robot.leftDrive.setPower(0.5);
-        robot.rightDrive.setPower(-0.5);
-        robot.leftDriveB.setPower(-0.5);
-        robot.rightDriveB.setPower(0.5);}
-
-
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
-        robot.leftDriveB.setPower(0);
-        robot.rightDriveB.setPower(0);
-
-        int backVal = robot.rightDrive.getCurrentPosition();
+        shift_left(100, 0.5);
+        stop_drive(0);
 
         //go backwards
-        while(robot.rightDrive.getCurrentPosition() - backVal < 1000){
-            robot.leftDrive.setPower(-0.5);
-            robot.rightDrive.setPower(-0.5);
-            robot.leftDriveB.setPower(-0.5);
-            robot.rightDriveB.setPower(-0.5);
-        }
 
-        robot.leftDrive.setPower(0);
-        robot.rightDrive.setPower(0);
-        robot.leftDriveB.setPower(0);
-        robot.rightDriveB.setPower(0);
+        stop_drive(0);
 
 
 
@@ -189,32 +139,56 @@ public class MFChassis extends LinearOpMode{
 	
     }
 
-    /* FIXME: add code here
-    public int shift_left(double distance or double time)
-    {
-    }
-     */
-
-    /* FIXME: add code here
-    public int shift_right(double distance or double time)
-    {
-    }
-     */
-
-    /* FIXME: add code here should use angle instead of distance, leff and right can be single function
-    public int turn_left(double distance or double time)
+    // FIXME: add code here
+    public int shift_left(double distance, double pwr)
     {
         int startVal = robot.rightDrive.getCurrentPosition();
         while (robot.rightDrive.getCurrentPosition() - startVal <  distance ){
             // implement PID control here
-            robot.leftDrive.setPower(-0.5);
-            robot.rightDrive.setPower(0.5);
-            robot.leftDriveB.setPower(0.5);
-            robot.rightDriveB.setPower(-0.5);
+            robot.leftDrive.setPower(-pwr);
+            robot.rightDrive.setPower(pwr);
+            robot.leftDriveB.setPower(pwr);
+            robot.rightDriveB.setPower(-pwr);
             telemetry.addData("right", robot.rightDrive.getCurrentPosition());
             telemetry.addData("startValue", startVal);
             telemetry.update();
         }
+        return 0;
+    }
+
+
+    // FIXME: add code here
+    public int shift_right(double distance, double pwr)
+    {
+        int startVal = robot.leftDrive.getCurrentPosition();
+        while(robot.leftDrive.getCurrentPosition() - startVal < distance) {
+            // implement PID control here
+            robot.leftDrive.setPower(0.5);
+            robot.rightDrive.setPower(-0.5);
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(0.5);
+            telemetry.addData("right", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
+        return 0;
+    }
+
+    /* FIXME: add code here should use angle instead of distance, leff and right can be single function
+    public int turn_left(double distance or double time, double pwr)
+    {
+        int startVal = robot.rightDrive.getCurrentPosition();
+        while (robot.rightDrive.getCurrentPosition() - startVal <  distance ){
+            // implement PID control here
+            robot.leftDrive.setPower(-pwr);
+            robot.rightDrive.setPower(pwr);
+            robot.leftDriveB.setPower(pwr);
+            robot.rightDriveB.setPower(-pwr);
+            telemetry.addData("right", robot.rightDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
+        return 0;
     }
      */
 
@@ -232,40 +206,40 @@ public class MFChassis extends LinearOpMode{
             telemetry.addData("startValue", startVal);
             telemetry.update();
         }
+        return 0;
     }
      */
 
-    /* FIXME: add code here
-    public int go_straight(double distance or double time)
+    // FIXME: add code here
+    public int go_straight(double distance, double pwr)
     {
         int startVal = robot.leftDrive.getCurrentPosition();
         while (robot.leftDrive.getCurrentPosition() - startVal < distance) {
             // implement PID control here
             telemetry.addData("MOTORS ", "ON");
-            robot.leftDrive.setPower(0.5);
-            robot.rightDrive.setPower(0.5);
-            robot.leftDriveB.setPower(0.5);
-            robot.rightDriveB.setPower(0.5);
-            telemetry.addData("left", robot.leftDrive.getCurrentPosition());
+            robot.leftDrive.setPower(pwr);
+            robot.rightDrive.setPower(pwr);
+            robot.leftDriveB.setPower(pwr);
+            robot.rightDriveB.setPower(pwr);
+            telemetry.addData("Motor", robot.leftDrive.getCurrentPosition());
             telemetry.addData("startValue", startVal);
             telemetry.update();
         }
+        return 0;
     }
-     */
 
-    /* FIXME: add code here
-    public int stop_drive(double time)
-    {
-        ElapsedTime curr_time  = period;
+    // FIXME: add code here
+    public int stop_drive(double time) {
+        ElapsedTime curr_time = period;
         //while (robot.leftDrive.getCurrentPosition() - startVal < distance) {
-            robot.leftDrive.setPower(0);
-            robot.rightDrive.setPower(0);
-            robot.leftDriveB.setPower(0);
-            robot.rightDriveB.setPower(0);
-            telemetry.addData("MOTORS ", "STOP");
-            telemetry.update();
+        robot.leftDrive.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDriveB.setPower(0);
+        telemetry.addData("MOTORS ", "STOP");
+        telemetry.update();
         //}
+        return 0;
     }
-     */
 }
 

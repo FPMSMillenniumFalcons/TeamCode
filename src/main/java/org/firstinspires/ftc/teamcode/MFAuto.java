@@ -54,6 +54,9 @@ public class MFAuto extends LinearOpMode {
     //HardWarePushbotColorDistant colorDistant = new HardWarePushbotColorDistant(); //FIXME:
 
     //HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
+
+
+
     private ElapsedTime runtime = new ElapsedTime();
 
     //@Override

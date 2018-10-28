@@ -70,7 +70,9 @@ public class MFTeleop extends OpMode {
     public DcMotor leftDriveB = null;
     public DcMotor rightDriveB = null;
     public DcMotor liftDrive = null; //neverrest 60 - 1
-
+    int boomStart;
+    int raiseValue;
+    int lowerValue;
     /* Declare OpMode members. */
     HardwarePushbot2 robot = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
 
@@ -116,6 +118,10 @@ public class MFTeleop extends OpMode {
      */
     @Override
     public void start() {
+        boomStart = robot.armDrive.getCurrentPosition();//starts at 7
+
+        raiseValue = robot.liftDrive.getCurrentPosition();
+        lowerValue = robot.liftDrive.getCurrentPosition();
     }
 
     /*
@@ -149,17 +155,17 @@ public class MFTeleop extends OpMode {
             left = 0;
             right = 0;
         }
-        boom = gamepad2.right_stick_y;
-        tilt = gamepad2.left_stick_y;
-        close = gamepad2.right_trigger;
-        robot.armDrive.setPower(boom);
-        robot.armTiltDrive.setPower(tilt);
-        robot.claw.setPosition(close);
+       // boom = gamepad2.right_stick_y;
+        //tilt = gamepad2.left_stick_y;
+        //close = gamepad2.right_trigger;
+      //  robot.armDrive.setPower(boom);
+        //robot.armTiltDrive.setPower(tilt);
+        //robot.claw.setPosition(close);
 
         telemetry.addData("armDrive", robot.armDrive.getCurrentPosition());
         telemetry.addData("armTiltDrive", robot.armTiltDrive.getCurrentPosition());// telemetry for arm
         telemetry.addData("claw", robot.claw.getPosition());
-        telemetry.update();
+        //telemetry.update();
         // get a reference to the color sensor.
         //go forward & backwards
         robot.leftDrive.setPower(left);
@@ -180,8 +186,8 @@ public class MFTeleop extends OpMode {
         robot.rightDriveB.setPower(sideright);
 
 
-        int raiseValue = robot.liftDrive.getCurrentPosition();
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad2.dpad_up) {
+
+        if (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad2.dpad_up) {
             telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(-.50);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
@@ -191,9 +197,9 @@ public class MFTeleop extends OpMode {
         telemetry.addData("done", "liftOver");
         robot.liftDrive.setPower(0);
         telemetry.update();
-        int lowerValue = robot.liftDrive.getCurrentPosition();
 
-        while (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 && gamepad2.dpad_down) {
+
+        if (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 && gamepad2.dpad_down) {
             telemetry.addData("LiftMotor2 ", "ON");
             robot.liftDrive.setPower(.50);
             telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
@@ -204,6 +210,34 @@ public class MFTeleop extends OpMode {
         telemetry.addData("done", "liftOver2");
         robot.liftDrive.setPower(0);
         telemetry.update();
+
+        double armpower = gamepad2.right_stick_y;
+        double armmult = 1.0;
+        if ( boomStart - robot.armDrive.getCurrentPosition() < 200 ){
+
+            armmult = .25;
+
+        }
+        else if ( boomStart - robot.armDrive.getCurrentPosition() < 400 ){
+            armmult = .50;
+        } else {
+                if (armpower < 0) {
+                    armmult = 1.0;
+                } else {
+                    armmult = .2;                }
+        }
+        robot.armDrive.setPower(armpower * armmult);
+
+        double tiltarmpower = gamepad2.left_stick_y;
+        double tiltarmmult = .75;
+        robot.armTiltDrive.setPower(tiltarmpower*tiltarmmult);
+
+
+
+
+
+
+
 
 
         // Use gamepad left & right Bumpers to open and close the claw
@@ -221,13 +255,13 @@ public class MFTeleop extends OpMode {
         // if (gamepad1.y)
         //     robot.leftArm.setPower(robot.ARM_UP_POWER);
         //  else if (gamepad1.a)
-        //     robot.leftArm.setPower(robot.ARM_DOWN_POWER);
+        //     robot.leftArm.setPower(robot.ARM_DOWN_POWER);millennium falcon
         //  else
         //     robot.leftArm.setPower(0.0);
 
         // Send telemetry message to signify robot running;
         //  telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-        telemetry.addData("left", "%.2f", left);
+        //telemetry.addData("left", "%.2f", left);
 
 
         //  telemetry.addData("right", "%.2f", right);

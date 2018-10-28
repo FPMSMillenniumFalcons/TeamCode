@@ -163,23 +163,71 @@ public class MFChassis extends LinearOpMode{
     }
      */
 
-    /* FIXME: add code here
+    /* FIXME: add code here should use angle instead of distance, leff and right can be single function
     public int turn_left(double distance or double time)
     {
+        int startVal = robot.rightDrive.getCurrentPosition();
+        while (robot.rightDrive.getCurrentPosition() - startVal <  distance ){
+            // implement PID control here
+            robot.leftDrive.setPower(-0.5);
+            robot.rightDrive.setPower(0.5);
+            robot.leftDriveB.setPower(0.5);
+            robot.rightDriveB.setPower(-0.5);
+            telemetry.addData("right", robot.rightDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
     }
      */
 
-    /* FIXME: add code here
+    /* FIXME: add code here should use angle instead of distance
     public int turn_right(double distance or double time)
     {
+        int startVal = robot.leftDrive.getCurrentPosition();
+        while(robot.leftDrive.getCurrentPosition() - startVal < distance) {
+            // implement PID control here
+            robot.leftDrive.setPower(0.5);
+            robot.rightDrive.setPower(-0.5);
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(0.5);
+            telemetry.addData("right", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
     }
      */
 
     /* FIXME: add code here
     public int go_straight(double distance or double time)
     {
+        int startVal = robot.leftDrive.getCurrentPosition();
+        while (robot.leftDrive.getCurrentPosition() - startVal < distance) {
+            // implement PID control here
+            telemetry.addData("MOTORS ", "ON");
+            robot.leftDrive.setPower(0.5);
+            robot.rightDrive.setPower(0.5);
+            robot.leftDriveB.setPower(0.5);
+            robot.rightDriveB.setPower(0.5);
+            telemetry.addData("left", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
     }
      */
 
+    /* FIXME: add code here
+    public int stop_drive(double time)
+    {
+        ElapsedTime curr_time  = period;
+        //while (robot.leftDrive.getCurrentPosition() - startVal < distance) {
+            robot.leftDrive.setPower(0);
+            robot.rightDrive.setPower(0);
+            robot.leftDriveB.setPower(0);
+            robot.rightDriveB.setPower(0);
+            telemetry.addData("MOTORS ", "STOP");
+            telemetry.update();
+        //}
+    }
+     */
 }
 

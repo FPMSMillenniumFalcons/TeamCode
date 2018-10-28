@@ -17,3 +17,7 @@ https://www.youtube.com/playlist?list=PLEuGrYl8iBm7wW9gyxpLDhBJAOWDZid1P
 
 FYI, this page has a list of all the software resources, but concentrate on the Android Studio part:
 https://www.firstinspires.org/resource-library/ftc/technology-information-and-resources
+
+
+
+[markdown cheatshett](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)

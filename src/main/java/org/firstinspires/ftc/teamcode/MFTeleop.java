@@ -156,6 +156,10 @@ public class MFTeleop extends OpMode {
         robot.armTiltDrive.setPower(tilt);
         robot.claw.setPosition(close);
 
+        telemetry.addData("armDrive", robot.armDrive.getCurrentPosition());
+        telemetry.addData("armTiltDrive", robot.armTiltDrive.getCurrentPosition());// telemetry for arm
+        telemetry.addData("claw", robot.claw.getPosition());
+        telemetry.update();
         // get a reference to the color sensor.
         //go forward & backwards
         robot.leftDrive.setPower(left);
@@ -174,6 +178,7 @@ public class MFTeleop extends OpMode {
         robot.leftDriveB.setPower(siderightneg);
         robot.rightDrive.setPower(siderightneg);
         robot.rightDriveB.setPower(sideright);
+
 
         int raiseValue = robot.liftDrive.getCurrentPosition();
         while (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad2.dpad_up) {

@@ -31,6 +31,9 @@ public class MFColorSensor extends LinearOpMode {
     DistanceSensor sensorDistance1;
     DistanceSensor sensorDistance2;
 
+    // create 2D array  table of color conditions
+    // | Seq | Alpha low | Alpha high | Red low | Red high | Green low | Green high | Blue low | Blue high |
+
     private int is_color_yellow(ColorSensor sensorColor) {
         int isyellow = 0;
         // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -91,8 +94,9 @@ public class MFColorSensor extends LinearOpMode {
             // hsvValues is an array that will hold the hue, saturation, and value information.
             //hsvValues1 = is_color_yellow(sensorColor1);
             //hsvValues2 = is_color_yellow(sensorColor2);
+            // is_same_color()
 
-            /* send the info back to driver station using telemetry function.
+             //send the info back to driver station using telemetry function.
             telemetry.addData("Distance (cm) 1",
                     String.format(Locale.US, "%.02f", sensorDistance1.getDistance(DistanceUnit.CM)));
             telemetry.addData("Alpha1", sensorColor1.alpha());
@@ -101,7 +105,7 @@ public class MFColorSensor extends LinearOpMode {
             telemetry.addData("Blue1 ", sensorColor1.blue());
 
             telemetry.addData("getDeviceName ", sensorColor1.getDeviceName());
-            telemetry.addData("Hue1", hsvValues1[0]);
+           //h telemetry.addData("Hue1", hsvValues1[0]);
 
             telemetry.addData("Distance (cm)2",
                     String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
@@ -110,12 +114,14 @@ public class MFColorSensor extends LinearOpMode {
             telemetry.addData("Green2", sensorColor2.green());
             telemetry.addData("Blue2 ", sensorColor2.blue());
             telemetry.addData("getDeviceName ", sensorColor2.getDeviceName());
-            telemetry.addData("Hue2", hsvValues2[0]);
-            */
+            //h telemetry.addData("Hue2", hsvValues2[0]);
+
             telemetry.update();
 
         }
     }
+
+
 
     /* FIXME: add code here
     public double query_distant()

@@ -96,13 +96,11 @@ public class MFColorSensor extends LinearOpMode {
         telemetry.addData("IN: Red1  ", red1);
         telemetry.addData("IN: Green1", green1);
         telemetry.addData("IN: Blue1 ", blue1);
-        telemetry.addData("IN: getDeviceName ", sensorColor1.getDeviceName());
-
-
         telemetry.addData("IN: Alpha2", alpha2);
         telemetry.addData("IN: Red2  ", red2);
         telemetry.addData("IN: Green2", green2);
         telemetry.addData("IN: Blue2 ", blue2);
+        telemetry.addData("IN: is_same_color ", is_same_color);
         telemetry.update();
 
         return is_same_color; //hsvValues;
@@ -118,12 +116,12 @@ public class MFColorSensor extends LinearOpMode {
         robot.init(hardwareMap);
         float hsvValues1[], hsvValues2[];
 
-        sensorColor1 = hardwareMap.get(ColorSensor.class, "sensor_color_distance1");
-        sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_color_distance2");
+        //sensorColor1 = hardwareMap.get(ColorSensor.class, "sensor_color_distance1");
+        //sensorColor2 = hardwareMap.get(ColorSensor.class, "sensor_color_distance2");
 
         // get a reference to the distance sensor that shares the same name.
-        sensorDistance1 = hardwareMap.get(DistanceSensor.class, "sensor_color_distance1");
-        sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensor_color_distance2");
+        //sensorDistance1 = hardwareMap.get(DistanceSensor.class, "sensor_color_distance1");
+        //sensorDistance2 = hardwareMap.get(DistanceSensor.class, "sensor_color_distance2");
         // Send telemetry message to signify robot waiting;
 
         /*
@@ -137,10 +135,10 @@ public class MFColorSensor extends LinearOpMode {
             same_color = is_color_same(0.1);
 
              //send the info back to driver station using telemetry function.
-            telemetry.addData("Distance (cm) 1",
+            /*telemetry.addData("Distance (cm) 1",
                     String.format(Locale.US, "%.02f", sensorDistance1.getDistance(DistanceUnit.CM)));
             telemetry.addData("Distance (cm)2",
-                    String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
+                    String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));*/
             telemetry.addData("Is it same color ", same_color);
             //h telemetry.addData("Hue2", hsvValues2[0]);
 

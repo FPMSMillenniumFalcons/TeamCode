@@ -84,7 +84,7 @@ public class MFColorSensor extends LinearOpMode {
         float green_delta = Math.abs(green1 - green2);
         float blue_delta = Math.abs(blue1 - blue2);
 
-        if (alpha_delta > delta_val) || (red_delta > delta_val) || (green_delta > delta_val) || (blue_delta > delta_val) {
+        if ((alpha_delta > delta_val) || (red_delta > delta_val) || (green_delta > delta_val) || (blue_delta > delta_val)) {
             is_same_color = 0;
         } else {
             is_same_color = 1;
@@ -97,7 +97,7 @@ public class MFColorSensor extends LinearOpMode {
         telemetry.addData("IN: Green1", green1);
         telemetry.addData("IN: Blue1 ", blue1);
         telemetry.addData("IN: getDeviceName ", sensorColor1.getDeviceName());
-        telemetry.addData("IN: Hue1", hsvValues1[0]);
+
 
         telemetry.addData("IN: Alpha2", alpha2);
         telemetry.addData("IN: Red2  ", red2);
@@ -134,7 +134,7 @@ public class MFColorSensor extends LinearOpMode {
             // hsvValues is an array that will hold the hue, saturation, and value information.
             //hsvValues1 = is_color_yellow(sensorColor1);
             //hsvValues2 = is_color_yellow(sensorColor2);
-            same_color = is_same_color();
+            same_color = is_color_same(0.1);
 
              //send the info back to driver station using telemetry function.
             telemetry.addData("Distance (cm) 1",

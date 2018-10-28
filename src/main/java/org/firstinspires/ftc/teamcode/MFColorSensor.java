@@ -34,7 +34,7 @@ public class MFColorSensor extends LinearOpMode {
     // create 2D array  table of color conditions
     // | Seq | Alpha low | Alpha high | Red low | Red high | Green low | Green high | Blue low | Blue high |
 
-    private int is_color_yellow(ColorSensor sensorColor) {
+    public int is_color_yellow(ColorSensor sensorColor) {
         int isyellow = 0;
         // hsvValues is an array that will hold the hue, saturation, and value information.
         float hsvValues[] = {0F, 0F, 0F};
@@ -69,7 +69,46 @@ public class MFColorSensor extends LinearOpMode {
         return isyellow; //hsvValues;
     }
 
-    //@Override
+    public int is_color_same(double delta_val) {
+        int is_same_color = 0;
+        float alpha1 = sensorColor1.alpha();
+        float alpha2 = sensorColor2.alpha();
+        float red1 = sensorColor1.red();
+        float red2 = sensorColor2.red();
+        float green1 = sensorColor1.green();
+        float green2 = sensorColor2.green();
+        float blue1 = sensorColor1.blue();
+        float blue2 = sensorColor2.blue();
+        float alpha_delta = Math.abs(alpha1 - alpha2);
+        float red_delta = Math.abs(red1 - red2);
+        float green_delta = Math.abs(green1 - green2);
+        float blue_delta = Math.abs(blue1 - blue2);
+
+        if (alpha_delta > delta_val) || (red_delta > delta_val) || (green_delta > delta_val) || (blue_delta > delta_val) {
+            is_same_color = 0;
+        } else {
+            is_same_color = 1;
+        }
+
+        //telemetry.addData("IN:Distance (cm) 1",
+        //    String.format(Locale.US, "%.02f", sensorDistance.getDistance(DistanceUnit.CM)));
+        telemetry.addData("IN: Alpha1", alpha1);
+        telemetry.addData("IN: Red1  ", red1);
+        telemetry.addData("IN: Green1", green1);
+        telemetry.addData("IN: Blue1 ", blue1);
+        telemetry.addData("IN: getDeviceName ", sensorColor1.getDeviceName());
+        telemetry.addData("IN: Hue1", hsvValues1[0]);
+
+        telemetry.addData("IN: Alpha2", alpha2);
+        telemetry.addData("IN: Red2  ", red2);
+        telemetry.addData("IN: Green2", green2);
+        telemetry.addData("IN: Blue2 ", blue2);
+        telemetry.update();
+
+        return is_same_color; //hsvValues;
+    }
+
+    @Override
     public void runOpMode() throws InterruptedException {
 
         /*
@@ -90,30 +129,19 @@ public class MFColorSensor extends LinearOpMode {
         /*
          * main loop of autonomous
          */
+        int same_color = 0;
         while (opModeIsActive()) {
             // hsvValues is an array that will hold the hue, saturation, and value information.
             //hsvValues1 = is_color_yellow(sensorColor1);
             //hsvValues2 = is_color_yellow(sensorColor2);
-            // is_same_color()
+            same_color = is_same_color();
 
              //send the info back to driver station using telemetry function.
             telemetry.addData("Distance (cm) 1",
                     String.format(Locale.US, "%.02f", sensorDistance1.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Alpha1", sensorColor1.alpha());
-            telemetry.addData("Red1  ", sensorColor1.red());
-            telemetry.addData("Green1", sensorColor1.green());
-            telemetry.addData("Blue1 ", sensorColor1.blue());
-
-            telemetry.addData("getDeviceName ", sensorColor1.getDeviceName());
-           //h telemetry.addData("Hue1", hsvValues1[0]);
-
             telemetry.addData("Distance (cm)2",
                     String.format(Locale.US, "%.02f", sensorDistance2.getDistance(DistanceUnit.CM)));
-            telemetry.addData("Alpha2", sensorColor2.alpha());
-            telemetry.addData("Red2  ", sensorColor2.red());
-            telemetry.addData("Green2", sensorColor2.green());
-            telemetry.addData("Blue2 ", sensorColor2.blue());
-            telemetry.addData("getDeviceName ", sensorColor2.getDeviceName());
+            telemetry.addData("Is it same color ", same_color);
             //h telemetry.addData("Hue2", hsvValues2[0]);
 
             telemetry.update();

@@ -11,6 +11,7 @@ First Tech Challenge ROVER RUCKUS Mission:
 
 <a href="https://www.youtube.com/watch?v=rR4gR4l2XA8&t=1s" target="_blank"><img src="https://www.youtube.com/watch?v=rR4gR4l2XA8&t=1s/0.jpg" 
 alt="First Tech Challenge ROVER RUCKUS" width="240" height="180" border="10" /></a>
+
 [First Tech Challenge ROVER RUCKUS Mission short Description](https://firstinspiresst01.blob.core.windows.net/ftc/2019/gonemlpg.pdf)
 
 Prerequisite:

@@ -111,6 +111,7 @@ public class MFTeleop extends OpMode {
      */
     @Override
     public void init_loop() {
+        robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     /*
@@ -122,6 +123,7 @@ public class MFTeleop extends OpMode {
 
         raiseValue = robot.liftDrive.getCurrentPosition();
         lowerValue = robot.liftDrive.getCurrentPosition();
+
     }
 
     /*

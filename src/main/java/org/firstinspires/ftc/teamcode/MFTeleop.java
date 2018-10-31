@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -70,9 +71,17 @@ public class MFTeleop extends OpMode {
     public DcMotor leftDriveB = null;
     public DcMotor rightDriveB = null;
     public DcMotor liftDrive = null; //neverrest 60 - 1
+    public ElapsedTime timer = new ElapsedTime();
     int boomStart;
     int raiseValue;
     int lowerValue;
+    int stickStart;
+    int boomPosPrev;
+    int stickPosPrev;
+    double timePrev;
+    double boomPower = 0;
+    double stickPower = 0;
+
     /* Declare OpMode members. */
     HardwarePushbot2 robot = new HardwarePushbot2(); // use the class created to define a Pushbot's hardware
 
@@ -103,7 +112,9 @@ public class MFTeleop extends OpMode {
         rightDriveB = hardwareMap.get(DcMotor.class, "right_driveB");
         liftDrive = hardwareMap.get(DcMotor.class, "lift_drive");
 
-
+        robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.armTiltDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE );
     }
 
     /*
@@ -111,7 +122,7 @@ public class MFTeleop extends OpMode {
      */
     @Override
     public void init_loop() {
-        robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     /*
@@ -119,11 +130,14 @@ public class MFTeleop extends OpMode {
      */
     @Override
     public void start() {
-        boomStart = robot.armDrive.getCurrentPosition();//starts at 7
-
+        boomStart = robot.armDrive.getCurrentPosition();//starts at 0
+        stickStart = robot.armTiltDrive.getCurrentPosition();
         raiseValue = robot.liftDrive.getCurrentPosition();
         lowerValue = robot.liftDrive.getCurrentPosition();
-
+        timer.reset();
+        timePrev = timer.time();
+        boomPosPrev = boomStart;
+        stickPosPrev = stickStart;
     }
 
     /*
@@ -131,15 +145,16 @@ public class MFTeleop extends OpMode {
      */
     @Override
     public void loop() {
+        double timerCurrent = timer.time();
         double left;
         double right;
         // double sideleft;
         // double sideleftneg;
         double sideright;
         double siderightneg;
-        double boom;
-        double tilt;
-        double close;
+        //double boom;
+        //double tilt;
+        //double close;
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -164,9 +179,9 @@ public class MFTeleop extends OpMode {
         //robot.armTiltDrive.setPower(tilt);
         //robot.claw.setPosition(close);
 
-        telemetry.addData("armDrive", robot.armDrive.getCurrentPosition());
-        telemetry.addData("armTiltDrive", robot.armTiltDrive.getCurrentPosition());// telemetry for arm
-        telemetry.addData("claw", robot.claw.getPosition());
+        //telemetry.addData("armDrive", robot.armDrive.getCurrentPosition());
+        //telemetry.addData("armTiltDrive", robot.armTiltDrive.getCurrentPosition());// telemetry for arm
+        //telemetry.addData("claw", robot.claw.getPosition());
         //telemetry.update();
         // get a reference to the color sensor.
         //go forward & backwards
@@ -190,30 +205,30 @@ public class MFTeleop extends OpMode {
 
 
         if (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad2.dpad_up) {
-            telemetry.addData("LiftMotor ", "ON");
+            //telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(-.50);
-            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
-            telemetry.addData("raiseValue", raiseValue);
-            telemetry.update();
+            //telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            //telemetry.addData("raiseValue", raiseValue);
+            //telemetry.update();
         }// Raise the Lift
-        telemetry.addData("done", "liftOver");
+        //telemetry.addData("done", "liftOver");
         robot.liftDrive.setPower(0);
-        telemetry.update();
+        //telemetry.update();
 
 
         if (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 && gamepad2.dpad_down) {
-            telemetry.addData("LiftMotor2 ", "ON");
+            //telemetry.addData("LiftMotor2 ", "ON");
             robot.liftDrive.setPower(.50);
-            telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
-            telemetry.addData("lowerValue", lowerValue);
-            telemetry.update();
+            //telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
+            //telemetry.addData("lowerValue", lowerValue);
+            //telemetry.update();
 
         }
-        telemetry.addData("done", "liftOver2");
+        //telemetry.addData("done", "liftOver2");
         robot.liftDrive.setPower(0);
-        telemetry.update();
+        //telemetry.update();
 
-        double armpower = gamepad2.right_stick_y;
+        /*double armpower = gamepad2.right_stick_y;
         double armmult = 1.0;
         if ( boomStart - robot.armDrive.getCurrentPosition() < 200 ){
 
@@ -233,13 +248,89 @@ public class MFTeleop extends OpMode {
         double tiltarmpower = gamepad2.left_stick_y;
         double tiltarmmult = .75;
         robot.armTiltDrive.setPower(tiltarmpower*tiltarmmult);
+        */
+        {
+            int boomTarget = (int) (gamepad2.left_stick_y * -200 + boomStart + 300);
+            int boomPosition = robot.armDrive.getCurrentPosition();
+            int boomSign = boomPosition > boomTarget ? -1 : 1;
+            double boomSpeed = Math.abs((boomPosition - boomPosPrev) / (timerCurrent - timePrev));
+            boomPosPrev = boomPosition;
+            double boomSpeedTarget = Math.abs((boomPosition - boomTarget) * 2.5);
+            if (boomSpeedTarget > 250) {
+                boomSpeedTarget = 250;
+            }
+            if (boomSpeed > boomSpeedTarget) {
+                boomPower -= 0.06;
+            } else {
+                boomPower += 0.06;
+            }
+            float x = Math.abs(boomPosition - boomTarget);
+            float maxPower = 1;
+            if (x < 12) {
+                maxPower = 0;
+            } else if (x < 40) {
+                maxPower = x / 30 - 1 / 3;
+            }
+            if (boomPower > maxPower) {
+                boomPower = maxPower;
+            }
+            if (boomPower < 0) {
+                boomPower = 0;
+            }
+            robot.armDrive.setPower(boomSign * boomPower);
+
+            /*telemetry.addData("start   pos", boomStart);
+            telemetry.addData("current pos", boomPosition);
+            telemetry.addData("target  pos", boomTarget);
+            telemetry.addData("boom  power", boomPower);
+            telemetry.addData("boom   sign", boomSign);*/
+        }
+
+        {
+            int stickTarget = (int) (gamepad2.right_stick_y * 300 + stickStart - 300);
+            int stickPosition = robot.armDrive.getCurrentPosition();
+            int stickSign = stickPosition > stickTarget ? -1 : 1;
+            double stickSpeed = Math.abs((stickPosition - stickPosPrev) / (timerCurrent - timePrev));
+            stickPosPrev = stickPosition;
+            double stickSpeedTarget = Math.abs((stickPosition - stickTarget) * 2.5);
+            if (stickSpeedTarget > 40) {
+                stickSpeedTarget = 40;
+            }
+            if (stickSpeed > stickSpeedTarget) {
+                stickPower -= 0.02;
+            } else {
+                stickPower += 0.02;
+            }
+            float x = Math.abs(stickPosition - stickTarget);
+            double maxPower = 1;
+
+            if (x < 12) {
+                maxPower = 0;
+            } else if (x < 40) {
+                maxPower = x / 30 - 1 / 3;
+            }
+            if (maxPower > 0.5 ){
+                maxPower = 0.5 ;
+            }
+            if (stickPower > maxPower) {
+                stickPower = maxPower;
+            }
+            if (stickPower < 0) {
+                stickPower = 0;
+            }
+            robot.armTiltDrive.setPower(stickSign * stickPower);
+
+            telemetry.addData("start   pos", stickStart);
+            telemetry.addData("current pos", stickPosition);
+            telemetry.addData("target  pos", stickTarget);
+            telemetry.addData("boom  power", stickPower);
+            telemetry.addData("boom   sign", stickSign);
+        }
 
 
 
 
-
-
-
+        telemetry.update();
 
 
         // Use gamepad left & right Bumpers to open and close the claw
@@ -267,6 +358,7 @@ public class MFTeleop extends OpMode {
 
 
         //  telemetry.addData("right", "%.2f", right);
+        timePrev = timerCurrent;
     }
 
     /*

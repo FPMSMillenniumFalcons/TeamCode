@@ -76,7 +76,7 @@ public class MFAuto extends LinearOpMode {
         // Wait until we're told to go
         waitForStart();
 
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 2000 ) {
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 2600 ) {
             telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(-0.5);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());

@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -64,6 +65,8 @@ public class HardwarePushbot2
     public Servo    claw = null;
     public ColorSensor sensorColor1 = null;
     public ColorSensor sensorColor2 = null;
+    public DistanceSensor sensorDistance1 = null;
+    public DistanceSensor sensorDistance2 = null;
 
     // The IMU sensor object
     Gyro_Test gyro = new Gyro_Test();

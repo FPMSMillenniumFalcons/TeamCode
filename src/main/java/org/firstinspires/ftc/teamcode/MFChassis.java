@@ -163,10 +163,10 @@ public class MFChassis extends LinearOpMode{
         int startVal = robot.leftDrive.getCurrentPosition();
         while(robot.leftDrive.getCurrentPosition() - startVal < distance) {
             // implement PID control here
-            robot.leftDrive.setPower(0.5);
-            robot.rightDrive.setPower(-0.5);
-            robot.leftDriveB.setPower(-0.5);
-            robot.rightDriveB.setPower(0.5);
+            robot.leftDrive.setPower(pwr);
+            robot.rightDrive.setPower(-pwr);
+            robot.leftDriveB.setPower(-pwr);
+            robot.rightDriveB.setPower(pwr);
             telemetry.addData("right", robot.leftDrive.getCurrentPosition());
             telemetry.addData("startValue", startVal);
             telemetry.update();

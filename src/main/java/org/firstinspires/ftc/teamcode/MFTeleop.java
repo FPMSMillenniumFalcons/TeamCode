@@ -256,33 +256,25 @@ public class MFTeleop extends OpMode {
         int boomLevel = boomPosition - boomStart;
         int stickLevel = stickPosition - stickStart;
         {
-            int boomTarget = (int) (gamepad2.left_stick_y * -200 + boomStart + 300);
             int boomSign = 0;
             if (gamepad2.left_stick_y > 0.08) {
                 boomSign = -1;
-            } else
-                if (gamepad2.left_stick_y < -0.08) {
-                    boomSign = 1;
-                }
-
+            } else if (gamepad2.left_stick_y < -0.08) {
+                boomSign = 1;
+            }
+            if (gamepad2.left_stick_y == 0){
+                boomPower = 0;
+            } else {
+                double boomSpeedTarget = 250;
                 double boomSpeed = Math.abs((boomPosition - boomPosPrev) / (timerCurrent - timePrev));
-                boomPosPrev = boomPosition;
-                double boomSpeedTarget = Math.abs((boomPosition - boomTarget) * 2.5);
-                if (boomSpeedTarget > 250) {
-                    boomSpeedTarget = 250;
-                }
                 if (boomSpeed > boomSpeedTarget) {
-                    boomPower -= 0.06;
+                    boomPower -= 0.025;
                 } else {
-                    boomPower += 0.06;
+                    boomPower += 0.025;
                 }
-                float x = Math.abs(boomPosition - boomTarget);
+            }
+                boomPosPrev = boomPosition;
                 float maxPower = 1;
-                if (x < 2) {
-                    maxPower = 0;
-                } else if (x < 40) {
-                    maxPower = x / 30 - 1 / 3;
-                }
                 if (boomPower > maxPower) {
                     boomPower = maxPower;
                 }

@@ -82,7 +82,7 @@ public class MFChassis extends LinearOpMode{
         telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
 
-        /*robot.liftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.liftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.liftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Send telemetry message to indicate successful Encoder reset
@@ -103,7 +103,7 @@ public class MFChassis extends LinearOpMode{
         }
         telemetry.addData("done", "liftOver2");
         robot.liftDrive.setPower(0);
-        telemetry.update();*/
+        telemetry.update();
 
         go_straight(1000, 0.5);
         stop_drive(0);

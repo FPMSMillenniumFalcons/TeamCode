@@ -61,15 +61,35 @@ public class MFAuto extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    public int lower_self() {
-        // code zero
-        robot.liftDrive.setPower(0);
 
+
+
+    //@Override
+    public void runOpMode() throws InterruptedException {
+        // code zero
+
+        robot.init(hardwareMap);
+        robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.liftDrive.setPower(0);
         int raiseValue = robot.liftDrive.getCurrentPosition();
 
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 100 ) {
+        // Wait until we're told to go
+        waitForStart();
+
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 2000 ) {
             telemetry.addData("LiftMotor ", "ON");
-            robot.liftDrive.setPower(.50);
+            robot.liftDrive.setPower(-0.5);
+            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("raiseValue", raiseValue);
+            telemetry.update();
+        }// Raise the Lift
+        telemetry.addData("done", "liftOver");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
+
+        /* while (robot.liftDrive.getCurrentPosition() - raiseValue < 10 ) {
+            telemetry.addData("LiftMotor ", "ON");
+            robot.liftDrive.setPower(-0.5);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
             telemetry.addData("raiseValue", raiseValue);
             telemetry.update();
@@ -90,26 +110,36 @@ public class MFAuto extends LinearOpMode {
             telemetry.addData("startValue", startVal);
             telemetry.update();*/
 
-            int lowerValue = robot.liftDrive.getCurrentPosition();
-            while (robot.liftDrive.getCurrentPosition() - lowerValue < 100) {
-                //telemetry.addData("LiftMotor2 ", "ON");
-                robot.liftDrive.setPower(-0.50);
-                //telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
-                //telemetry.addData("lowerValue", lowerValue);
-                //telemetry.update();
-
-            }
-            //telemetry.addData("done", "liftOver2");
-            robot.liftDrive.setPower(0);
+        /*int lowerValue = robot.liftDrive.getCurrentPosition();
+        while (robot.liftDrive.getCurrentPosition() - lowerValue < 10) {
+            //telemetry.addData("LiftMotor2 ", "ON");
+            robot.liftDrive.setPower(0.50);
+            //telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
+            //telemetry.addData("lowerValue", lowerValue);
             //telemetry.update();
 
+        }*/
+        //telemetry.addData("done", "liftOver2");
+        robot.liftDrive.setPower(0);
+        //telemetry.update();
 
-            return 0;
-    }
+        /* //go left
+        int startVal = robot.rightDrive.getCurrentPosition();
+        while (robot.rightDrive.getCurrentPosition() - startVal <  distance ){
+            // implement PID control here
+            robot.leftDrive.setPower(-pwr);
+            robot.rightDrive.setPower(pwr);
+            robot.leftDriveB.setPower(pwr);
+            robot.rightDriveB.setPower(-pwr);
+            telemetry.addData("right", robot.rightDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
+        //stop
 
 
-    //@Override
-    public void runOpMode() throws InterruptedException {
+         */
+
 
         /*
          * Initialize the drive system variables.

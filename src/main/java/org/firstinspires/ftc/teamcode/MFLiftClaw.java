@@ -59,6 +59,26 @@ public class MFLiftClaw extends LinearOpMode{
     public MFLiftClaw(){
     }
 
+    public int lower_self() {
+        // code zero
+        robot.liftDrive.setPower(0);
+
+        int raiseValue = robot.liftDrive.getCurrentPosition();
+
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 100) {
+            telemetry.addData("LiftMotor ", "ON");
+            robot.liftDrive.setPower(.50);
+            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("raiseValue", raiseValue);
+            telemetry.update();
+        }// Raise the Lift
+        telemetry.addData("done", "liftOver");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
+
+         return 0;
+    }
+
     @Override
     public void runOpMode() {
         double lift_distance;

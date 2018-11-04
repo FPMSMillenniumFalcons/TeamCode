@@ -113,6 +113,7 @@ public class HardwarePushbot2
         liftDrive.setPower(0);
         armDrive.setPower(0);
         armTiltDrive.setPower(0);
+        liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

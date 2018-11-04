@@ -20,6 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(name = "MFAuto")
 public class MFAuto extends LinearOpMode {
+    HardwarePushbot2 robot = new HardwarePushbot2();
+
     /*
      * instantiate chassis object. chassis object should contains all driver capability.
      * Gyro sensor should be part of chassis
@@ -58,6 +60,53 @@ public class MFAuto extends LinearOpMode {
 
 
     private ElapsedTime runtime = new ElapsedTime();
+
+    public int lower_self() {
+        // code zero
+        robot.liftDrive.setPower(0);
+
+        int raiseValue = robot.liftDrive.getCurrentPosition();
+
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 100 ) {
+            telemetry.addData("LiftMotor ", "ON");
+            robot.liftDrive.setPower(.50);
+            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("raiseValue", raiseValue);
+            telemetry.update();
+        }// Raise the Lift
+        telemetry.addData("done", "liftOver");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
+
+      /*  int startVal = robot.leftDrive.getCurrentPosition();
+        while (robot.leftDrive.getCurrentPosition() - startVal < 1000) {
+            // implement PID control here
+            telemetry.addData("MOTORS ", "ON");
+            robot.leftDrive.setPower(-0.5);
+            robot.rightDrive.setPower(-0.5); fixme
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(-0.5);
+            telemetry.addData("Motor", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();*/
+
+            int lowerValue = robot.liftDrive.getCurrentPosition();
+            while (robot.liftDrive.getCurrentPosition() - lowerValue < 100) {
+                //telemetry.addData("LiftMotor2 ", "ON");
+                robot.liftDrive.setPower(-0.50);
+                //telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
+                //telemetry.addData("lowerValue", lowerValue);
+                //telemetry.update();
+
+            }
+            //telemetry.addData("done", "liftOver2");
+            robot.liftDrive.setPower(0);
+            //telemetry.update();
+
+
+            return 0;
+    }
+
 
     //@Override
     public void runOpMode() throws InterruptedException {

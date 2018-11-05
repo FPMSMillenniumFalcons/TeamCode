@@ -20,6 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @Autonomous(name = "MFAuto")
 public class MFAuto extends LinearOpMode {
+    HardwarePushbot2 robot = new HardwarePushbot2();
+
     /*
      * instantiate chassis object. chassis object should contains all driver capability.
      * Gyro sensor should be part of chassis
@@ -56,8 +58,85 @@ public class MFAuto extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
+
+
+
     //@Override
     public void runOpMode() throws InterruptedException {
+        // code zero
+
+        robot.init(hardwareMap);
+        robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.liftDrive.setPower(0);
+        int raiseValue = robot.liftDrive.getCurrentPosition();
+
+        // Wait until we're told to go
+        waitForStart();
+
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 2600 ) {
+            telemetry.addData("LiftMotor ", "ON");
+            robot.liftDrive.setPower(-0.5);
+            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("raiseValue", raiseValue);
+            telemetry.update();
+        }// Raise the Lift
+        telemetry.addData("done", "liftOver");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
+
+        /* while (robot.liftDrive.getCurrentPosition() - raiseValue < 10 ) {
+            telemetry.addData("LiftMotor ", "ON");
+            robot.liftDrive.setPower(-0.5);
+            telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
+            telemetry.addData("raiseValue", raiseValue);
+            telemetry.update();
+        }// Raise the Lift
+        telemetry.addData("done", "liftOver");
+        robot.liftDrive.setPower(0);
+        telemetry.update();
+
+      /*  int startVal = robot.leftDrive.getCurrentPosition();
+        while (robot.leftDrive.getCurrentPosition() - startVal < 1000) {
+            // implement PID control here
+            telemetry.addData("MOTORS ", "ON");
+            robot.leftDrive.setPower(-0.5);
+            robot.rightDrive.setPower(-0.5); fixme
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(-0.5);
+            telemetry.addData("Motor", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();*/
+
+        /*int lowerValue = robot.liftDrive.getCurrentPosition();
+        while (robot.liftDrive.getCurrentPosition() - lowerValue < 10) {
+            //telemetry.addData("LiftMotor2 ", "ON");
+            robot.liftDrive.setPower(0.50);
+            //telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
+            //telemetry.addData("lowerValue", lowerValue);
+            //telemetry.update();
+
+        }*/
+        //telemetry.addData("done", "liftOver2");
+        robot.liftDrive.setPower(0);
+        //telemetry.update();
+
+        /* //go left
+        int startVal = robot.rightDrive.getCurrentPosition();
+        while (robot.rightDrive.getCurrentPosition() - startVal <  distance ){
+            // implement PID control here
+            robot.leftDrive.setPower(-pwr);
+            robot.rightDrive.setPower(pwr);
+            robot.leftDriveB.setPower(pwr);
+            robot.rightDriveB.setPower(-pwr);
+            telemetry.addData("right", robot.rightDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
+        //stop
+
+
+         */
+
 
         /*
          * Initialize the drive system variables.

@@ -36,33 +36,33 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
+
 /**
  * This is NOT an opmode.
- *
+ * <p>
  * This class can be used to define all the specific hardware for a single robot.
  * In this case that robot is a Pushbot.
  * See PushbotTeleopTank_Iterative and others classes starting with "Pushbot" for usage examples.
- *
+ * <p>
  * This hardware class assumes the following device names have been configured on the robot:
  * Note:  All names are lower case and some have single spaces between words.
- *
+ * <p>
  * Motor channel:  Left  drive motor:        "left_drive"
  * Motor channel:  Right drive motor:        "right_drive"
  * Motor channel:  Manipulator drive motor:  "left_arm"
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class HardwarePushbot2
-{
+public class HardwarePushbot2 {
     /* Public OpMode members. */
-    public DcMotor  leftDrive   = null;
-    public DcMotor  rightDrive  = null;
-    public DcMotor  leftDriveB   = null;
-    public DcMotor  rightDriveB  = null;
-    public DcMotor  liftDrive = null;
-    public DcMotor  armDrive = null;
-    public DcMotor  armTiltDrive = null;
-    public Servo    claw = null;
+    public DcMotor leftDrive = null;
+    public DcMotor rightDrive = null;
+    public DcMotor leftDriveB = null;
+    public DcMotor rightDriveB = null;
+    public DcMotor liftDrive = null;
+    public DcMotor armDrive = null;
+    public DcMotor armTiltDrive = null;
+    public Servo claw = null;
     public ColorSensor sensorColor1 = null;
     public ColorSensor sensorColor2 = null;
     public DistanceSensor sensorDistance1 = null;
@@ -71,16 +71,16 @@ public class HardwarePushbot2
     // The IMU sensor object
     Gyro_Test gyro = new Gyro_Test();
 
-    public static final double MID_SERVO       =  0.5 ;
+    public static final double MID_SERVO = 0.5;
     //public static final double ARM_UP_POWER    =  0.45 ;
     //public static final double ARM_DOWN_POWER  = -0.45 ;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     /* Constructor */
-    public HardwarePushbot2(){
+    public HardwarePushbot2() {
 
     }
 
@@ -90,17 +90,15 @@ public class HardwarePushbot2
         hwMap = ahwMap;
 
         // Define and Initialize Motors
-        leftDrive  = hwMap.get(DcMotor.class, "left_drive");
+        leftDrive = hwMap.get(DcMotor.class, "left_drive");
         rightDrive = hwMap.get(DcMotor.class, "right_drive");
-        leftDriveB  = hwMap.get(DcMotor.class, "left_driveB");
+        leftDriveB = hwMap.get(DcMotor.class, "left_driveB");
         rightDriveB = hwMap.get(DcMotor.class, "right_driveB");
         liftDrive = hwMap.get(DcMotor.class, "lift_drive");
         armDrive = hwMap.get(DcMotor.class, "arm_lift_drive");
         armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
         sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1" );
         sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2" );
-        sensorDistance1 = hwMap.get(DistanceSensor.class, "distance_sensor1");
-        sensorDistance2 = hwMap.get(DistanceSensor.class, "distance_sensor2");
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
@@ -118,6 +116,12 @@ public class HardwarePushbot2
         liftDrive.setPower(0);
         armDrive.setPower(0);
         armTiltDrive.setPower(0);
+        liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armTiltDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
@@ -136,5 +140,5 @@ public class HardwarePushbot2
         //FIXME: Add Gyro code here
 
     }
- }
+}
 

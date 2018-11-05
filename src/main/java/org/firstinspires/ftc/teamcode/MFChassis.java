@@ -60,6 +60,8 @@ import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 @Autonomous (name = "MFChassis", group = "14404")
 public class MFChassis extends LinearOpMode{
 
+    int lowerValue;
+
     /* Declare OpMode members. */
     HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
     private ElapsedTime period  = new ElapsedTime();
@@ -91,25 +93,6 @@ public class MFChassis extends LinearOpMode{
         robot.liftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.liftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Send telemetry message to indicate successful Encoder reset
-        telemetry.addData("Lift",  "Starting at %7d",
-                          robot.liftDrive.getCurrentPosition());
-        telemetry.update();
-
-        // Wait for the game to start (driver presses PLAY)
-        waitForStart();
-        int lowerValue = robot.liftDrive.getCurrentPosition();
-        while (robot.liftDrive.getCurrentPosition() - lowerValue < 1440 ) {
-            telemetry.addData("LiftMotor2 ", "ON");
-            robot.liftDrive.setPower(.50);
-            telemetry.addData("lift2", robot.liftDrive.getCurrentPosition());
-            telemetry.addData("lowerValue", lowerValue);
-            telemetry.update();
-
-        }
-        telemetry.addData("done", "liftOver2");
-        robot.liftDrive.setPower(0);
-        telemetry.update();
 
         go_straight(1000, 0.5);
         stop_drive(0);
@@ -123,6 +106,7 @@ public class MFChassis extends LinearOpMode{
         stop_drive(0);
 
         //go backwards
+        go_straight(1000, -0.5);
 
         stop_drive(0);
         */

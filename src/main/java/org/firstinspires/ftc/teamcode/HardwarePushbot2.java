@@ -99,6 +99,8 @@ public class HardwarePushbot2
         armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
         sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1" );
         sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2" );
+        sensorDistance1 = hwMap.get(DistanceSensor.class, "distance_sensor1");
+        sensorDistance2 = hwMap.get(DistanceSensor.class, "distance_sensor2");
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors

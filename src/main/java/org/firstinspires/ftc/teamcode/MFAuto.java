@@ -33,7 +33,7 @@ public class MFAuto extends LinearOpMode {
      *    chassis.go_leftdiag(double distance or double time); + foward, - backward
      *    chassis.go_rightdiag(double distance or double time); + foward, - backward
      */
-    //HardwarePushbotChassis chassis = new HardwarePushbotChassis(); //FIXME:
+    MFChassis chassis = new MFChassis();
 
     /*
      * instantiate lift and claw object and should have following method
@@ -44,17 +44,14 @@ public class MFAuto extends LinearOpMode {
      *     lift_claw.updown(double height) + up, <=0 down and reset
      *     lift_claw.extend(double length) + extend out, <=0 retract
      */
-    //HardWarePushbotLiftClaw lift_claw = new HardWarePushbotLiftClaw(); //FIXME:
+    MFLiftClaw lift_claw = new MFLiftClaw();
 
     /*
      * instantiate ColorDistanceSensor. this could be part of chassis object
      *     colorDistant.is_color_yellow()
      *     colorDistant.query_distant()
      */
-    //HardWarePushbotColorDistant colorDistant = new HardWarePushbotColorDistant(); //FIXME:
-
-    //HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
-
+    MFColorSensor colorDistant = new MFColorSensor();
 
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -67,7 +64,7 @@ public class MFAuto extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         //chassis(hardwareMap);  //FIXME:
-        //lift_claw(hardwareMap);  //FIXME:
+        lift_claw.init(hardwareMap);  //FIXME:
         //colorDistant(hardwarMap);  //FIXME:
 
         /*

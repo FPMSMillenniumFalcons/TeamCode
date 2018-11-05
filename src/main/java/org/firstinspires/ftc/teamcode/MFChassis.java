@@ -70,6 +70,11 @@ public class MFChassis extends LinearOpMode{
     public MFChassis(){
     }
 
+    /* Initialize standard Hardware interfaces */
+    public void init(HardwareMap ahwMap) {
+        // Save reference to Hardware map
+        robot.init(ahwMap);
+    }
 
     public void runOpMode() {
         /*
@@ -78,6 +83,7 @@ public class MFChassis extends LinearOpMode{
          */
         robot.init(hardwareMap);
 
+        /*
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
@@ -109,7 +115,7 @@ public class MFChassis extends LinearOpMode{
         stop_drive(0);
 
         //GO RIGHT
-        shift_right(1000 /*angle*/, 0.5);
+        shift_right(1000, 0.5);
         stop_drive(0);
          
         //go left
@@ -119,7 +125,7 @@ public class MFChassis extends LinearOpMode{
         //go backwards
 
         stop_drive(0);
-
+        */
 
 
 
@@ -240,6 +246,10 @@ public class MFChassis extends LinearOpMode{
         telemetry.update();
         //}
         return 0;
+    }
+
+    public void tele_print () {
+
     }
 }
 

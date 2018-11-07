@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
@@ -65,7 +66,12 @@ public class HardwarePushbot2 {
     public Servo claw = null;
     public ColorSensor sensorColor1 = null;
     public ColorSensor sensorColor2 = null;
+<<<<<<< HEAD
     //public TouchSensor liftDown = null;
+=======
+    public DistanceSensor sensorDistance1 = null;
+    public DistanceSensor sensorDistance2 = null;
+>>>>>>> af60641341c26385d106cce54430167674c45d9b
 
     // The IMU sensor object
     Gyro_Test gyro = new Gyro_Test();
@@ -96,10 +102,15 @@ public class HardwarePushbot2 {
         liftDrive = hwMap.get(DcMotor.class, "lift_drive");
         armDrive = hwMap.get(DcMotor.class, "arm_lift_drive");
         armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
+<<<<<<< HEAD
         sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1");
         sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2");
         //liftDown = hwMap.get(TouchSensor.class, "lift_Down");
 
+=======
+        sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1" );
+        sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2" );
+>>>>>>> af60641341c26385d106cce54430167674c45d9b
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors

@@ -43,20 +43,26 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
 //@Disabled
-public class MFLiftClaw extends LinearOpMode{
+public class MFLiftClaw extends LinearOpMode {
     /* Declare OpMode members. */
     HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware
-    private ElapsedTime runtime  = new ElapsedTime();
+    private ElapsedTime runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
-    static final double     DRIVE_GEAR_REDUCTION    = 2.0 ;     // This is < 1.0 if geared UP
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double COUNTS_PER_MOTOR_REV = 1440;    // eg: TETRIX Motor Encoder
+    static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    static final double     DRIVE_SPEED             = 0.6;
+    static final double DRIVE_SPEED = 0.6;
 
     /* Constructor */
-    public MFLiftClaw(){
+    public MFLiftClaw() {
+    }
+
+    /* Initialize standard Hardware interfaces */
+    public void init(HardwareMap ahwMap) {
+        // Save reference to Hardware map
+        robot.init(ahwMap);
     }
 
     public int lower_self() {

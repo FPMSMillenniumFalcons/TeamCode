@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
@@ -64,6 +65,7 @@ public class HardwarePushbot2 {
     public Servo claw = null;
     public ColorSensor sensorColor1 = null;
     public ColorSensor sensorColor2 = null;
+    //public TouchSensor liftDown = null;
 
     // The IMU sensor object
     Gyro_Test gyro = new Gyro_Test();
@@ -96,6 +98,8 @@ public class HardwarePushbot2 {
         armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
         sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1");
         sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2");
+        //liftDown = hwMap.get(TouchSensor.class, "lift_Down");
+
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors

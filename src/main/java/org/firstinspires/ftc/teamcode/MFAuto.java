@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import android.graphics.Color;
+import android.support.annotation.VisibleForTesting;
 
 import java.util.Locale;
 
@@ -70,22 +71,84 @@ public class MFAuto extends LinearOpMode {
 
         robot.init(hardwareMap);
         robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        robot.liftDrive.setPower(0.05);
+
+        sleep(1000);
         robot.liftDrive.setPower(0);
-        int raiseValue = robot.liftDrive.getCurrentPosition();
+
 
         // Wait until we're told to go
         waitForStart();
 
-        while (robot.liftDrive.getCurrentPosition() - raiseValue < 2600 ) {
+        int raiseValue = robot.liftDrive.getCurrentPosition();
+
+        while (robot.liftDrive.getCurrentPosition() - raiseValue < 2700 ) { // lift
             telemetry.addData("LiftMotor ", "ON");
             robot.liftDrive.setPower(-0.5);
             telemetry.addData("lift", robot.liftDrive.getCurrentPosition());
             telemetry.addData("raiseValue", raiseValue);
             telemetry.update();
         }// Raise the Lift
-        telemetry.addData("done", "liftOver");
         robot.liftDrive.setPower(0);
+        telemetry.addData("done", "liftOver");
         telemetry.update();
+
+        sleep(300);
+
+
+        int startVal = robot.leftDrive.getCurrentPosition();
+        while (Math.abs(robot.leftDrive.getCurrentPosition() - startVal) < 25) { // move out of hook
+            // implement PID control here
+            telemetry.addData("MOTORS ", "ON");
+            robot.leftDrive.setPower(-0.2);
+            robot.rightDrive.setPower(-0.4);
+            robot.leftDriveB.setPower(-0.4);
+            robot.rightDriveB.setPower(-0.2);
+            telemetry.addData("start", startVal);
+            telemetry.addData("Motor", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", startVal);
+            telemetry.update();
+        }
+
+        robot.leftDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.rightDriveB.setPower(0);
+
+        int leftVal = robot.leftDrive.getCurrentPosition();
+        while (Math.abs((robot.leftDrive.getCurrentPosition() + robot.rightDriveB.getCurrentPosition()) / 2 - leftVal) < 2450) { // move to box
+            // implement PID control here
+            telemetry.addData("MOTORS ", "ON");
+            robot.leftDrive.setPower(0.5);
+            robot.rightDrive.setPower(-0.5);
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(0.5);
+            telemetry.addData("Motormove", robot.leftDrive.getCurrentPosition() - leftVal);
+            telemetry.addData("startValue", leftVal);
+            telemetry.update();
+        }
+        robot.leftDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.rightDriveB.setPower(0);
+
+        int turnRVal = robot.leftDrive.getCurrentPosition();
+        while (Math.abs(robot.leftDrive.getCurrentPosition() - turnRVal) < 325) { // move to box
+            // implement PID control here
+            telemetry.addData("MOTORSt ", "ON");
+            robot.leftDrive.setPower(0.5);
+            robot.rightDrive.setPower(-0.5);
+            robot.leftDriveB.setPower(0.5);
+            robot.rightDriveB.setPower(-0.5);
+            telemetry.addData("Motormove", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", turnRVal);
+            telemetry.update();
+        }
+        robot.leftDrive.setPower(0);
+        robot.leftDriveB.setPower(0);
+        robot.rightDrive.setPower(0);
+        robot.rightDriveB.setPower(0);
+
 
         /* while (robot.liftDrive.getCurrentPosition() - raiseValue < 10 ) {
             telemetry.addData("LiftMotor ", "ON");
@@ -120,7 +183,7 @@ public class MFAuto extends LinearOpMode {
 
         }*/
         //telemetry.addData("done", "liftOver2");
-        robot.liftDrive.setPower(0);
+
         //telemetry.update();
 
         /* //go left

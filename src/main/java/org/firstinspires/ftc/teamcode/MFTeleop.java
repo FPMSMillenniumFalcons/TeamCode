@@ -135,6 +135,8 @@ public class MFTeleop extends OpMode {
         //telemetry.addData("StickPos", stickLevel);// boom
         //telemetry.addData("BoomPos", boomLevel);// telemetry for arm
 
+        telemetry.update();
+
 
     }
 
@@ -166,18 +168,6 @@ public class MFTeleop extends OpMode {
         //double boom;
         //double tilt;
         //double close;
-double claw = gamepad2.right_trigger;
-double wrist = 0;
-if (gamepad2.right_stick_x > 0.01){
-    wrist = gamepad2.right_stick_x;
-}
-        robot.claw.setPosition(claw);
-        robot.wrist.setPosition(wrist);
-        telemetry.addData("clawpos", robot.claw.getPosition());
-        telemetry.addData("wristpos",robot.wrist.getPosition());
-        telemetry.update();
-        robot.claw.setPosition(claw);
-        robot.wrist.setPosition(wrist);
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -281,7 +271,7 @@ if (gamepad2.right_stick_x > 0.01){
             } else if (gamepad2.left_stick_y < -0.08) {
                 boomSign = 1;
             }
-            if (gamepad2.left_stick_y == 0){
+            if (gamepad2.left_stick_y == 0) {
                 boomPower = 0;
             } else {
                 double boomSpeedTarget = 150;
@@ -292,115 +282,138 @@ if (gamepad2.right_stick_x > 0.01){
                     boomPower += 0.025;
                 }
             }
-                boomPosPrev = boomPosition;
-                float maxPower = 1;
-                if (boomPower > maxPower) {
-                    boomPower = maxPower;
-                }
-                if (boomPower < 0) {
-                    boomPower = 0;
-                }
-                robot.armDrive.setPower(boomSign * boomPower);
+            boomPosPrev = boomPosition;
+            float maxPower = 1;
+            if (boomPower > maxPower) {
+                boomPower = maxPower;
+            }
+            if (boomPower < 0) {
+                boomPower = 0;
+            }
+            robot.armDrive.setPower(boomSign * boomPower);
 
+
+            double claw = gamepad2.right_trigger;
+            double wrist = 0;
+            double wristMix = gamepad2.left_trigger;
+            double wristLow = 0;
+            double wristHigh = -41 / 12100 * boomLevel + 6343 / 6050;
+            if (wristHigh < 0.5) {
+                wristHigh = 0.5;
+            }
+            if (boomLevel < 405) {
+                wristLow = -1 / 340 * boomLevel + 1361 / 850;
+            } else if (boomLevel > 405) {
+                wristLow = -1 / 500 * boomLevel + 61 / 50;
+            }
+            if (wrist < 0){
+                wrist = 0;
+        } else if (wrist > 1){
+                wrist = 1;
+            }
+        wrist = ((1 - wristMix) * wristLow + wristMix * wristHigh);
+        robot.wrist.setPosition(wrist);
+
+        robot.claw.setPosition(claw);
             /*telemetry.addData("start   pos", boomStart);
             telemetry.addData("current pos", boomPosition);
-            telemetry.addData("target  pos", boomTarget);
+            .addData("target  pos", boomTarget);
             telemetry.addData("boom  power", boomPower);
             telemetry.addData("boom   sign", boomSign);*/
-            }
+    }
 
-            {
+    {
 
-                double targetMix = gamepad2.left_trigger;
-                int stickTargetLow;
-                if (boomLevel < 140) {
-                    stickTargetLow = (int) (0.7 * boomLevel);
+        double targetMix = gamepad2.left_trigger;
+        int stickTargetLow;
+        if (boomLevel < 140) {
+            stickTargetLow = (int) (0.7 * boomLevel);
 
-                } else if (boomLevel < 340) {
-                    stickTargetLow = 100;
-                } else {
-                    stickTargetLow = (int) (-3.6 * boomLevel + 1168);
-                }
+        } else if (boomLevel < 340) {
+            stickTargetLow = 100;
+        } else {
+            stickTargetLow = (int) (-3.6 * boomLevel + 1168);
+        }
 
-                int stickTargetHigh = (int) (2.25 * boomLevel - 1600);
-                int stickTarget = (int) ((1 - targetMix) * stickTargetLow + targetMix * stickTargetHigh) + stickStart;
-                stickTarget += 100 * gamepad2.right_stick_y;
-                int stickSign = stickPosition > stickTarget ? -1 : 1;
-                double stickSpeed = Math.abs((stickPosition - stickPosPrev) / (timerCurrent - timePrev));
-                stickPosPrev = stickPosition;
-                double stickSpeedTarget = Math.abs((stickPosition - stickTarget) * 2.5);
-                if (stickSpeedTarget > 500) {
-                    stickSpeedTarget = 500;
-                }
-                if (stickSpeed > stickSpeedTarget) {
-                    stickPower -= 0.025;
-                } else {
-                    stickPower += 0.025;
-                }
-                float x = Math.abs(stickPosition - stickTarget);
-                double maxPower = 1;
+        int stickTargetHigh = (int) (2.25 * boomLevel - 1600);
+        int stickTarget = (int) ((1 - targetMix) * stickTargetLow + targetMix * stickTargetHigh) + stickStart;
+        stickTarget += 100 * gamepad2.right_stick_y;
+        int stickSign = stickPosition > stickTarget ? -1 : 1;
+        double stickSpeed = Math.abs((stickPosition - stickPosPrev) / (timerCurrent - timePrev));
+        stickPosPrev = stickPosition;
+        double stickSpeedTarget = Math.abs((stickPosition - stickTarget) * 2.5);
+        if (stickSpeedTarget > 500) {
+            stickSpeedTarget = 500;
+        }
+        if (stickSpeed > stickSpeedTarget) {
+            stickPower -= 0.025;
+        } else {
+            stickPower += 0.025;
+        }
+        float x = Math.abs(stickPosition - stickTarget);
+        double maxPower = 1;
 
-                if (x < 12) {
-                    maxPower = 0;
-                } else if (x < 40) {
-                    maxPower = x / 30 - 1 / 3;
-                }
-                if (maxPower > 0.5) {
-                    maxPower = 0.5;
-                }
-                if (stickPower > maxPower) {
-                    stickPower = maxPower;
-                }
-                if (stickPower < 0) {
-                    stickPower = 0;
-                }
-                robot.armTiltDrive.setPower(stickSign * stickPower);
+        if (x < 12) {
+            maxPower = 0;
+        } else if (x < 40) {
+            maxPower = x / 30 - 1 / 3;
+        }
+        if (maxPower > 0.5) {
+            maxPower = 0.5;
+        }
+        if (stickPower > maxPower) {
+            stickPower = maxPower;
+        }
+        if (stickPower < 0) {
+            stickPower = 0;
+        }
+        robot.armTiltDrive.setPower(stickSign * stickPower);
 
            /* telemetry.addData("start   pos", stickStart);
             telemetry.addData("current pos", stickPosition);
             telemetry.addData("target  pos", stickTarget);
             telemetry.addData("boom  power", stickPower);
             telemetry.addData("boom   sign", stickSign);*/
-            }
-            telemetry.addData("armDrive", stickLevel);// boom
-            telemetry.addData("armTiltDrive", boomLevel);// telemetry for arm
-
-
-            telemetry.update();
-
-
-            // Use gamepad left & right Bumpers to open and close the claw
-            //  if (gamepad1.right_bumper)
-            //      clawOffset += CLAW_SPEED;
-            //  else if (gamepad1.left_bumper)
-            //     clawOffset -= CLAW_SPEED;
-
-            // Move both servos to new position.  Assume servos are mirror image of each other.
-            //  clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-            //  robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-            //   robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
-
-            // Use gamepad buttons to move the arm up (Y) and down (A)
-            // if (gamepad1.y)
-            //     robot.leftArm.setPower(robot.ARM_UP_POWER);
-            //  else if (gamepad1.a)
-            //     robot.leftArm.setPower(robot.ARM_DOWN_POWER);millennium falcon
-            //  else
-            //     robot.leftArm.setPower(0.0);
-
-            // Send telemetry message to signify robot running;
-            //  telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-            //telemetry.addData("left", "%.2f", left);
-
-
-            //  telemetry.addData("right", "%.2f", right);
-            timePrev = timerCurrent;
-        }
-
-        /*
-         * Code to run ONCE after the driver hits STOP
-         */
-        @Override
-        public void stop () {
-        }
     }
+    // telemetry.addData("armDrive", stickLevel);// boom
+    // telemetry.addData("armTiltDrive", boomLevel);// telemetry for arm
+
+
+    // Use gamepad left & right Bumpers to open and close the claw
+    //  if (gamepad1.right_bumper)
+    //      clawOffset += CLAW_SPEED;
+    //  else if (gamepad1.left_bumper)
+    //     clawOffset -= CLAW_SPEED;
+
+    // Move both servos to new position.  Assume servos are mirror image of each other.
+    //  clawOffset = Range.clip(clawOffset, -0.5, 0.5);
+    //  robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
+    //   robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+
+    // Use gamepad buttons to move the arm up (Y) and down (A)
+    // if (gamepad1.y)
+    //     robot.leftArm.setPower(robot.ARM_UP_POWER);
+    //  else if (gamepad1.a)
+    //     robot.leftArm.setPower(robot.ARM_DOWN_POWER);millennium falcon
+    //  else
+    //     robot.leftArm.setPower(0.0);
+
+    // Send telemetry message to signify robot running;
+    //  telemetry.addData("claw",  "Offset = %.2f", clawOffset);
+    //telemetry.addData("left", "%.2f", left);
+
+
+    //  telemetry.addData("right", "%.2f", right);
+        telemetry.addData("boompos",boomLevel);
+        telemetry.addData("wristpos",robot.wrist.getPosition());
+        telemetry.update();
+    timePrev =timerCurrent;
+}
+
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
+    }
+}

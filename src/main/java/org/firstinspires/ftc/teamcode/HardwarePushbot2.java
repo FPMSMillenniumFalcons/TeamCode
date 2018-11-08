@@ -123,9 +123,7 @@ public class HardwarePushbot2 {
         liftDrive.setPower(0);
         armDrive.setPower(0);
         armTiltDrive.setPower(0);
-        //set servos to 0
-        claw.setPosition(MID_SERVO);
-        wrist.setPosition(MID_SERVO);
+
 
         liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

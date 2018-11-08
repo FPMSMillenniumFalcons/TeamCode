@@ -120,8 +120,6 @@ public class MFTeleop extends OpMode {
         claw = hardwareMap.get(Servo.class, "claw");
         wrist = hardwareMap.get(Servo.class, "wrist");
 
-        robot.claw.setPosition(0);
-        robot.wrist.setPosition(0);
 
     }
 
@@ -136,9 +134,7 @@ public class MFTeleop extends OpMode {
         int stickLevel = stickPosition - stickStart;
         //telemetry.addData("StickPos", stickLevel);// boom
         //telemetry.addData("BoomPos", boomLevel);// telemetry for arm
-        telemetry.addData("clawpos", claw.getPosition());
-        telemetry.addData("wristpos",wrist.getPosition());
-        telemetry.update();
+
 
     }
 
@@ -170,13 +166,25 @@ public class MFTeleop extends OpMode {
         //double boom;
         //double tilt;
         //double close;
+double claw = gamepad2.right_trigger;
+double wrist = 0;
+if (gamepad2.right_stick_x > 0.01){
+    wrist = gamepad2.right_stick_x;
+}
+        robot.claw.setPosition(claw);
+        robot.wrist.setPosition(wrist);
+        telemetry.addData("clawpos", robot.claw.getPosition());
+        telemetry.addData("wristpos",robot.wrist.getPosition());
+        telemetry.update();
+        robot.claw.setPosition(claw);
+        robot.wrist.setPosition(wrist);
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
         left = gamepad1.left_stick_y;
         right = gamepad1.right_stick_y;
         //sideleft = gamepad1.left_stick_x;
-        //sideleftneg = -gamepad1.left_stick_x;
+        //sideleftneg = -gampad1.left_stick_x;
         sideright = -gamepad1.right_stick_x;
         siderightneg = gamepad1.right_stick_x;
         if (java.lang.Math.abs(sideright) > 0 && java.lang.Math.abs(-gamepad1.right_stick_y) < 0.9) {

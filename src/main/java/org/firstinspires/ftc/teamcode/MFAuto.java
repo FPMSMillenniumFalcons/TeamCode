@@ -73,8 +73,8 @@ public class MFAuto extends LinearOpMode {
         sleep(1000);
         robot.liftDrive.setPower(0);
 
-        robot.claw.setPosition(0);
-        robot.wrist.setPosition(0);
+        robot.claw.setPosition(0.66);
+        robot.wrist.setPosition(0.9);
 
 
         // Wait until we're told to go
@@ -148,6 +148,14 @@ public class MFAuto extends LinearOpMode {
         robot.leftDriveB.setPower(0);
         robot.rightDrive.setPower(0);
         robot.rightDriveB.setPower(0);
+
+        robot.wrist.setPosition(0);
+        robot.claw.setPosition(1);
+
+        sleep(1000);
+
+        robot.wrist.setPosition(0.9);
+        robot.claw.setPosition(0);
 
 
         /* while (robot.liftDrive.getCurrentPosition() - raiseValue < 10 ) {

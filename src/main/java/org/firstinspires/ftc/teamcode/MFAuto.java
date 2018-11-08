@@ -73,6 +73,9 @@ public class MFAuto extends LinearOpMode {
         sleep(1000);
         robot.liftDrive.setPower(0);
 
+        robot.claw.setPosition(0);
+        robot.wrist.setPosition(0);
+
 
         // Wait until we're told to go
         waitForStart();
@@ -130,7 +133,7 @@ public class MFAuto extends LinearOpMode {
         robot.rightDriveB.setPower(0);
 
         int turnRVal = robot.leftDrive.getCurrentPosition();
-        while (Math.abs(robot.leftDrive.getCurrentPosition() - turnRVal) < 325) { // move to box
+        while (Math.abs(robot.leftDrive.getCurrentPosition() - turnRVal) < 325) { // turn to box
             // implement PID control here
             telemetry.addData("MOTORSt ", "ON");
             robot.leftDrive.setPower(0.5);

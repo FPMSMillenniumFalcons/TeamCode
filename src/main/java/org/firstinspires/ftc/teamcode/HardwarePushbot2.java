@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
-/**
+/*
  * This is NOT an opmode.
  * <p>
  * This class can be used to define all the specific hardware for a single robot.
@@ -64,19 +64,20 @@ public class HardwarePushbot2 {
     public DcMotor armDrive = null;
     public DcMotor armTiltDrive = null;
     public Servo claw = null;
+    public Servo wrist = null;
+
+
     public ColorSensor sensorColor1 = null;
     public ColorSensor sensorColor2 = null;
-<<<<<<< HEAD
-    //public TouchSensor liftDown = null;
-=======
+
     public DistanceSensor sensorDistance1 = null;
     public DistanceSensor sensorDistance2 = null;
->>>>>>> af60641341c26385d106cce54430167674c45d9b
+
 
     // The IMU sensor object
     Gyro_Test gyro = new Gyro_Test();
 
-    public static final double MID_SERVO = 0.5;
+    public static final double MID_SERVO = 0;
     //public static final double ARM_UP_POWER    =  0.45 ;
     //public static final double ARM_DOWN_POWER  = -0.45 ;
 
@@ -102,15 +103,9 @@ public class HardwarePushbot2 {
         liftDrive = hwMap.get(DcMotor.class, "lift_drive");
         armDrive = hwMap.get(DcMotor.class, "arm_lift_drive");
         armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
-<<<<<<< HEAD
-        sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1");
-        sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2");
-        //liftDown = hwMap.get(TouchSensor.class, "lift_Down");
-
-=======
         sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1" );
         sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2" );
->>>>>>> af60641341c26385d106cce54430167674c45d9b
+
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
@@ -128,8 +123,9 @@ public class HardwarePushbot2 {
         liftDrive.setPower(0);
         armDrive.setPower(0);
         armTiltDrive.setPower(0);
-        liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        //set servos to 0
+        claw.setPosition(MID_SERVO);
+        wrist.setPosition(MID_SERVO);
 
         liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -147,7 +143,8 @@ public class HardwarePushbot2 {
 
         // Define and initialize ALL installed servos.
         claw = hwMap.get(Servo.class, "claw");
-        claw.setPosition(MID_SERVO);
+        wrist = hwMap.get(Servo.class, "wrist");
+
 
         //FIXME: Add Gyro code here
 

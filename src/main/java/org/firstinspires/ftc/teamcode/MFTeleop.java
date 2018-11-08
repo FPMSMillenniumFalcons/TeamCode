@@ -38,6 +38,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
@@ -71,6 +72,8 @@ public class MFTeleop extends OpMode {
     public DcMotor leftDriveB = null;
     public DcMotor rightDriveB = null;
     public DcMotor liftDrive = null; //neverrest 60 - 1
+    public Servo claw = null;
+    public Servo wrist = null;
     public ElapsedTime timer = new ElapsedTime();
     int boomStart;
     int raiseValue;
@@ -114,6 +117,11 @@ public class MFTeleop extends OpMode {
         leftDriveB = hardwareMap.get(DcMotor.class, "left_driveB");
         rightDriveB = hardwareMap.get(DcMotor.class, "right_driveB");
         liftDrive = hardwareMap.get(DcMotor.class, "lift_drive");
+        claw = hardwareMap.get(Servo.class, "claw");
+        wrist = hardwareMap.get(Servo.class, "wrist");
+
+        robot.claw.setPosition(0);
+        robot.wrist.setPosition(0);
 
     }
 
@@ -126,9 +134,12 @@ public class MFTeleop extends OpMode {
         int stickPosition = robot.armTiltDrive.getCurrentPosition();
         int boomLevel = boomPosition - boomStart;
         int stickLevel = stickPosition - stickStart;
-        telemetry.addData("StickPos", stickLevel);// boom
-        telemetry.addData("BoomPos", boomLevel);// telemetry for arm
+        //telemetry.addData("StickPos", stickLevel);// boom
+        //telemetry.addData("BoomPos", boomLevel);// telemetry for arm
+        telemetry.addData("clawpos", claw.getPosition());
+        telemetry.addData("wristpos",wrist.getPosition());
         telemetry.update();
+
     }
 
     /*
@@ -265,7 +276,7 @@ public class MFTeleop extends OpMode {
             if (gamepad2.left_stick_y == 0){
                 boomPower = 0;
             } else {
-                double boomSpeedTarget = 250;
+                double boomSpeedTarget = 150;
                 double boomSpeed = Math.abs((boomPosition - boomPosPrev) / (timerCurrent - timePrev));
                 if (boomSpeed > boomSpeedTarget) {
                     boomPower -= 0.025;
@@ -304,7 +315,7 @@ public class MFTeleop extends OpMode {
                 }
 
                 int stickTargetHigh = (int) (2.25 * boomLevel - 1600);
-                int stickTarget = (int) ((1 - targetMix) * stickTargetLow + targetMix * stickTargetHigh);
+                int stickTarget = (int) ((1 - targetMix) * stickTargetLow + targetMix * stickTargetHigh) + stickStart;
                 stickTarget += 100 * gamepad2.right_stick_y;
                 int stickSign = stickPosition > stickTarget ? -1 : 1;
                 double stickSpeed = Math.abs((stickPosition - stickPosPrev) / (timerCurrent - timePrev));
@@ -314,9 +325,9 @@ public class MFTeleop extends OpMode {
                     stickSpeedTarget = 500;
                 }
                 if (stickSpeed > stickSpeedTarget) {
-                    stickPower -= 0.02;
+                    stickPower -= 0.025;
                 } else {
-                    stickPower += 0.02;
+                    stickPower += 0.025;
                 }
                 float x = Math.abs(stickPosition - stickTarget);
                 double maxPower = 1;

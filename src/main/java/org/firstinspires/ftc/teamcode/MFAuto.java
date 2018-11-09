@@ -68,7 +68,7 @@ public class MFAuto extends LinearOpMode {
 
         robot.init(hardwareMap);
         robot.liftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        robot.liftDrive.setPower(0.05);
+        robot.liftDrive.setPower(0.1);
 
         sleep(1000);
         robot.liftDrive.setPower(0);
@@ -76,6 +76,15 @@ public class MFAuto extends LinearOpMode {
         robot.claw.setPosition(0.66);
         robot.wrist.setPosition(0.9);
 
+
+
+       while(!opModeIsActive()) {
+           telemetry.addData("TouchSensorData; ", robot.touchSensor.getValue());
+           telemetry.update();
+           if (!robot.touchSensor.isPressed()) {
+               robot.liftDrive.setPower(0.3);
+           }
+       }
 
         // Wait until we're told to go
         waitForStart();
@@ -102,7 +111,7 @@ public class MFAuto extends LinearOpMode {
             telemetry.addData("MOTORS ", "ON");
             robot.leftDrive.setPower(-0.2);
             robot.rightDrive.setPower(-0.4);
-            robot.leftDriveB.setPower(-0.4);
+            robot.leftDriveB.setPower(-0.45);
             robot.rightDriveB.setPower(-0.2);
             telemetry.addData("start", startVal);
             telemetry.addData("Motor", robot.leftDrive.getCurrentPosition());
@@ -116,13 +125,13 @@ public class MFAuto extends LinearOpMode {
         robot.rightDriveB.setPower(0);
 
         int leftVal = robot.leftDrive.getCurrentPosition();
-        while (Math.abs((robot.leftDrive.getCurrentPosition() + robot.rightDriveB.getCurrentPosition()) / 2 - leftVal) < 2450) { // move to box
+        while (Math.abs((robot.leftDrive.getCurrentPosition() + robot.rightDriveB.getCurrentPosition()) / 2 - leftVal) < 2900) { // move to box
             // implement PID control here
             telemetry.addData("MOTORS ", "ON");
-            robot.leftDrive.setPower(0.5);
-            robot.rightDrive.setPower(-0.5);
-            robot.leftDriveB.setPower(-0.5);
-            robot.rightDriveB.setPower(0.5);
+            robot.leftDrive.setPower(0.35);
+            robot.rightDrive.setPower(-0.35);
+            robot.leftDriveB.setPower(-0.35);
+            robot.rightDriveB.setPower(0.35);
             telemetry.addData("Motormove", robot.leftDrive.getCurrentPosition() - leftVal);
             telemetry.addData("startValue", leftVal);
             telemetry.update();
@@ -150,12 +159,29 @@ public class MFAuto extends LinearOpMode {
         robot.rightDriveB.setPower(0);
 
         robot.wrist.setPosition(0);
+        sleep(2500);
         robot.claw.setPosition(1);
 
-        sleep(1000);
+        sleep(500);
 
-        robot.wrist.setPosition(0.9);
         robot.claw.setPosition(0);
+        robot.wrist.setPosition(0.9);
+
+        /*sleep(1000);
+
+        int fwdVal = robot.leftDrive.getCurrentPosition();
+        while (Math.abs(robot.leftDrive.getCurrentPosition() - fwdVal) < 500) { // turn to box
+            // implement PID control here
+            telemetry.addData("MOTORSt ", "ON");
+            robot.leftDrive.setPower(-0.5);     fixme
+            robot.rightDrive.setPower(0.5);
+            robot.leftDriveB.setPower(-0.5);
+            robot.rightDriveB.setPower(0.5);
+            telemetry.addData("Motormove", robot.leftDrive.getCurrentPosition());
+            telemetry.addData("startValue", turnRVal);
+            telemetry.update();
+        }*/
+
 
 
         /* while (robot.liftDrive.getCurrentPosition() - raiseValue < 10 ) {

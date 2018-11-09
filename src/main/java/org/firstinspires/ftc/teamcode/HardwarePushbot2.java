@@ -65,7 +65,7 @@ public class HardwarePushbot2 {
     public DcMotor armTiltDrive = null;
     public Servo claw = null;
     public Servo wrist = null;
-
+    public TouchSensor touchSensor = null;
 
     public ColorSensor sensorColor1 = null;
     public ColorSensor sensorColor2 = null;
@@ -105,6 +105,7 @@ public class HardwarePushbot2 {
         armTiltDrive = hwMap.get(DcMotor.class, "arm_tilt_drive");
         sensorColor1 = hwMap.get(ColorSensor.class, "color_sensor1" );
         sensorColor2 = hwMap.get(ColorSensor.class, "color_sensor2" );
+        touchSensor = hwMap.get(TouchSensor.class, "touch_sensor");
 
 
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors

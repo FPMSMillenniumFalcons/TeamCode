@@ -42,7 +42,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 @Autonomous(name="Pushbot: Auto Drive By Encoder", group="Pushbot")
-//@Disabled
+@Disabled
 public class MFLiftClaw extends LinearOpMode {
     /* Declare OpMode members. */
     HardwarePushbot2 robot = new HardwarePushbot2();   // Use a Pushbot's hardware

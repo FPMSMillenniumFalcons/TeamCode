@@ -21,6 +21,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 import java.util.Locale;
+@Disabled
 @Autonomous(name = "FlyingFalconAuto")
 public class FlyingFalconv3 extends LinearOpMode {
     BNO055IMU imu;

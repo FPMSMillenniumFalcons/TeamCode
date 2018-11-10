@@ -85,6 +85,8 @@ public class MFTeleop extends OpMode {
     double boomPower = 0;
     double stickPower = 0;
     double wristPos = 0;
+    double joystickPrev = 0;
+
 
 
     /* Declare OpMode members. */
@@ -173,16 +175,17 @@ public class MFTeleop extends OpMode {
         //double close;
 double featherY = 0;
 double featherX = 0;
+        double f = 0.3;
 
-if(gamepad1.right_stick_x < 0.8){
+if(Math.abs(gamepad1.right_stick_x )< 0.8){
             featherX = 2.0/5 * gamepad1.right_stick_x;
-        } else if (gamepad1.right_stick_x > 0.8) {
+        } else {
             featherX =  17.0/5 * gamepad1.right_stick_x - 12.0/5;
         }
 
-        if(gamepad1.right_stick_y < 0.8){
+        if(Math.abs(gamepad1.right_stick_y) < 0.8){
             featherY = 2.0/5 * gamepad1.right_stick_y;
-        } else if (gamepad1.right_stick_y > 0.8) {
+        } else  {
             featherY =  17.0/5 * gamepad1.right_stick_y - 12.0/5;
         }
 
@@ -198,15 +201,15 @@ if(gamepad1.right_stick_x < 0.8){
         final double v3 = speed * Math.sin(direction) + rotation;
         final double v4 = speed * Math.cos(direction) - rotation;
 
-
+        if ( gamepad1.right_bumper ) {
+            f = 1.0;
+        }
 
 
         leftDrive.setPower(v1);
         rightDrive.setPower(v2);
         leftDriveB.setPower(v3);
         rightDriveB.setPower(v4);
-
-
 
 
         // Run wheels in tank mode (note: The joystick goes negative when pushed forwards, so negate it)
@@ -251,6 +254,7 @@ if(gamepad1.right_stick_x < 0.8){
         robot.leftDriveB.setPower(siderightneg);
         robot.rightDrive.setPower(siderightneg);
         robot.rightDriveB.setPower(sideright);*/
+
 
 
         if (robot.liftDrive.getCurrentPosition() - raiseValue < 1440 && gamepad2.dpad_up) {
@@ -304,13 +308,15 @@ if(gamepad1.right_stick_x < 0.8){
         int boomLevel = boomPosition - boomStart;
         int stickLevel = stickPosition - stickStart;
         {
+
             int boomSign = 0;
             if (gamepad2.left_stick_y > 0.08) {
                 boomSign = -1;
             } else if (gamepad2.left_stick_y < -0.08) {
                 boomSign = 1;
             }
-            if (gamepad2.left_stick_y == 0) {
+            double joystickNow = gamepad2.left_stick_y;
+            if (joystickNow == 0) {
                 boomPower = 0;
             } else {
                 double boomSpeedTarget = 150;
@@ -320,8 +326,15 @@ if(gamepad1.right_stick_x < 0.8){
                 } else {
                     boomPower += 0.025;
                 }
+                if (joystickPrev == 0 && joystickNow != 0
+                        || joystickPrev < 0 && joystickNow > 0
+                        || joystickPrev > 0 && joystickNow < 0
+                        ) {
+                    boomPower = 0.3;
+                }
             }
             boomPosPrev = boomPosition;
+            joystickPrev = joystickNow;
             float maxPower = 1;
             if (boomPower > maxPower) {
                 boomPower = maxPower;

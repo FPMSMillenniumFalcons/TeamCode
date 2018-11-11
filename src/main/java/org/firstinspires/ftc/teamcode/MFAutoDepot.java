@@ -127,7 +127,7 @@ public class MFAutoDepot extends LinearOpMode {
         robot.rightDriveB.setPower(0);
 
         int leftVal = robot.leftDrive.getCurrentPosition();
-        while (Math.abs((robot.leftDrive.getCurrentPosition() + robot.rightDriveB.getCurrentPosition()) / 2 - leftVal) < 2700) { // move to box
+        while (Math.abs((robot.leftDrive.getCurrentPosition() + robot.rightDriveB.getCurrentPosition()) / 2 - leftVal) < 2900) { // move to box
             // implement PID control here
             telemetry.addData("MOTORS ", "ON");
             robot.leftDrive.setPower(0.35);

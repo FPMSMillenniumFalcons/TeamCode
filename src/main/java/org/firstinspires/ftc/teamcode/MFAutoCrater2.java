@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name = "MFAutoCrater")
+@Autonomous(name = "MFAutoCrater2")
 public class MFAutoCrater2 extends LinearOpMode {
     HardwarePushbot2 robot = new HardwarePushbot2();
 
